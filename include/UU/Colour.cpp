@@ -1,15 +1,6 @@
 #include "Colour.hpp"
 #include "Math.hpp"
 
-CColour CColour::Black(0, 0, 0);
-CColour CColour::White(255, 255, 255);
-CColour CColour::Red(255, 0, 0);
-CColour CColour::Green(0, 255, 0);
-CColour CColour::Blue(0, 0, 255);
-CColour CColour::Yellow(255, 255, 0);
-CColour CColour::Cyan(0, 255, 255);
-CColour CColour::Magenta(255, 0, 255);
-
 CColour::CColour(const uint32_t c)
 {
 	*reinterpret_cast<uint32_t *>(this) = c;

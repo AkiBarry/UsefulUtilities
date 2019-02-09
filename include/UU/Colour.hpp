@@ -54,6 +54,15 @@ public:
 	static CColour		Magenta;
 };
 
+CColour CColour::Black(0, 0, 0);
+CColour CColour::White(255, 255, 255);
+CColour CColour::Red(255, 0, 0);
+CColour CColour::Green(0, 255, 0);
+CColour CColour::Blue(0, 0, 255);
+CColour CColour::Yellow(255, 255, 0);
+CColour CColour::Cyan(0, 255, 255);
+CColour CColour::Magenta(255, 0, 255);
+
 class CHSB
 {
 public:
