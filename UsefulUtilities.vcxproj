@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="include\UU\Colour.cpp" />
     <ClCompile Include="include\UU\Math.cpp" />
   </ItemGroup>
   <ItemGroup>

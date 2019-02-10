@@ -34,6 +34,27 @@ namespace NMath
 	template <typename T, size_t dim, bool radian = true>
 	class CAngle;
 
+	template <bool radians = true>
+	using CAng2f = CAngle<float, 2, radians>;
+	template <bool radians = true>
+	using CAng3f = CAngle<float, 3, radians>;
+	template <bool radians = true>
+	using CAng4f = CAngle<float, 4, radians>;
+
+	template <bool radians = true>
+	using CAng2d = CAngle<double, 2, radians>;
+	template <bool radians = true>
+	using CAng3d = CAngle<double, 3, radians>;
+	template <bool radians = true>
+	using CAng4d = CAngle<double, 4, radians>;
+				   
+	template <bool radians = true>
+	using CAng2i = CAngle<int, 2, radians>;
+	template <bool radians = true>
+	using CAng3i = CAngle<int, 3, radians>;
+	template <bool radians = true>
+	using CAng4i = CAngle<int, 4, radians>;
+
 	template <typename T, size_t rows, size_t columns>
 	class CMatrix;
 

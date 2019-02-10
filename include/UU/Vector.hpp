@@ -1,12 +1,11 @@
 #pragma once
 #include "Math.hpp"
 #include <initializer_list>
-#include <iostream>
 #include <type_traits>
-#include "Console.hpp"
+#include <ostream>
 
 template <class T, size_t size>
-class NMath::CVector
+class NMath::CVector final
 {
 private:
 	T data[size];
@@ -18,7 +17,10 @@ public:
 
 	CVector(std::initializer_list<T> init_list);
 
-	constexpr void					Zero();
+	CVector(const CVector& v);
+	CVector(CVector&& v) noexcept : data(std::move(v.data)) {}
+
+	void							Zero();
 
 	T&								operator[](size_t i);
 	T								operator[](size_t i) const;
@@ -29,6 +31,7 @@ public:
 	void							CopyToArray(T* t) const;
 
 	CVector&						operator=(const CVector& v);
+	CVector&						operator=(CVector&& v) noexcept = default;
 
 	CVector&						operator+=(const CVector& v);
 	CVector&						operator-=(const CVector& v);
@@ -59,7 +62,7 @@ public:
 	bool							WithinAABox(const CVector& min, const CVector& max) const;
 
 	template<class U, bool radians = true>
-	CAngle<U, size, radians>		ToCAngle() const;
+	CAngle<U, size * (size - 1) / 2, radians>		ToCAngle() const;
 	//CColour						ToColour() const;
 
 	template<size_t N>
@@ -189,7 +192,16 @@ NMath::CVector<T, size>::CVector(std::initializer_list<T> init_list)
 }
 
 template<class T, size_t size>
-constexpr void NMath::CVector<T, size>::Zero()
+NMath::CVector<T, size>::CVector(const CVector & v)
+{
+	for (size_t i = 0; i < size; ++i)
+	{
+		data[i] = v.data[i];
+	}
+}
+
+template<class T, size_t size>
+void NMath::CVector<T, size>::Zero()
 {
 	for(size_t i = 0; i < size; ++i)
 	{
@@ -439,7 +451,7 @@ bool NMath::CVector<T, size>::WithinAABox(const CVector& min, const CVector& max
 
 template<class T, size_t size>
 template<class U, bool radians>
-NMath::CAngle<U, size, radians> NMath::CVector<T, size>::ToCAngle() const
+NMath::CAngle<U, size * (size - 1) / 2, radians> NMath::CVector<T, size>::ToCAngle() const
 {
 	auto normalized_vec = this->Normalized();
 	CAngle<U, size, radians> temp;
