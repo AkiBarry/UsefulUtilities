@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>
 
 namespace NMath
 {
@@ -8,13 +9,13 @@ namespace NMath
 		
 	constexpr double	DBL_PI =		3.141592653589793;
 	constexpr double	DBL_INV_PI =	1.0 / DBL_PI;
-	constexpr double	DBL_E =		2.718281828459045;
+	constexpr double	DBL_E =			2.718281828459045;
 		
 	constexpr float		FLT_RAD2DEG =	180.f / FLT_PI;
 	constexpr float		FLT_DEG2RAD =	FLT_PI / 180.f;
 		
-	constexpr double	DBL_RAD2DEG = 180.f / DBL_PI;
-	constexpr double	DBL_DEG2RAD = DBL_PI / 180.f;
+	constexpr double	DBL_RAD2DEG =	180.f / DBL_PI;
+	constexpr double	DBL_DEG2RAD =	DBL_PI / 180.f;
 
 	template <typename T, size_t dim>
 	class CVector;
@@ -76,8 +77,11 @@ namespace NMath
 	template <class T>
 	T Clamp(T x, T min, T max);
 
-	template <typename T>
+	template <class T>
 	T Lerp(T min, T max, T factor);
+
+	template <class T>
+	T NormalizeAngle(T angle);
 
 	float Mod(float a, float b);
 	double Mod(double a, double b);
@@ -186,4 +190,10 @@ template<typename T>
 T NMath::Lerp(T min, T max, T factor)
 {
 	return min + (max - min) * factor;
+}
+
+template<class T>
+T NMath::NormalizeAngle(T angle)
+{
+	return fmod(angle + T(180), T(360)) - T(180);
 }

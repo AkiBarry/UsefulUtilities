@@ -20,6 +20,8 @@ public:
 	CVector(const CVector& v);
 	CVector(CVector&& v) noexcept : data(std::move(v.data)) {}
 
+	~CVector() = default;
+
 	void							Zero();
 
 	T&								operator[](size_t i);
@@ -61,7 +63,7 @@ public:
 
 	bool							WithinAABox(const CVector& min, const CVector& max) const;
 
-	template<class U, bool radians = true>
+	template<class U, bool radians = false>
 	CAngle<U, size * (size - 1) / 2, radians>		ToCAngle() const;
 	//CColour						ToColour() const;
 
@@ -105,7 +107,7 @@ public:
 	friend class NMath::CAngle;
 };
 
-template <class T, size_t size, bool radians /* = true */>
+template <class T, size_t size, bool radians = false>
 class NMath::CAngle
 {
 private:
@@ -803,7 +805,7 @@ NMath::CVector<T, size> NMath::CAngle<T, size, radians>::ToCVector() const
 template<class T, size_t size, bool radians>
 NMath::CVector<T, size> NMath::CAngle<T, size, radians>::Forward() const
 {
-	NMath::CVector<T, size> temp;
+	CVector<T, size> temp;
 
 	if constexpr (size == 2)
 	{
@@ -833,7 +835,7 @@ NMath::CVector<T, size> NMath::CAngle<T, size, radians>::Forward() const
 template<class T, size_t size, bool radians>
 NMath::CVector<T, size> NMath::CAngle<T, size, radians>::Right() const
 {
-	NMath::CVector<T, size> temp;
+	CVector<T, size> temp;
 
 	if constexpr (size == 3)
 	{
@@ -855,7 +857,7 @@ template<class T, size_t size, bool radians>
 NMath::CVector<T, size> NMath::CAngle<T, size, radians>::Up() const
 {
 
-	NMath::CVector<T, size> temp;
+	CVector<T, size> temp;
 
 	if constexpr (size == 3)
 	{
@@ -898,29 +900,29 @@ bool NMath::CAngle<T, size, radians>::IsValid() const
 template<class T, size_t size, bool radians>
 NMath::CAngle<T, size, radians> NMath::CAngle<T, size, radians>::Min(const CAngle & a) const
 {
-	NMath::CAngle<T, size, radians> temp;
+	CAngle<T, size, radians> temp;
 
 	for (size_t i = 0; i < size; ++i)
 		temp.data[i] = NMath::Min(data[i], a.data[i]);
 
-	return *this;
+	return temp;
 }
 
 template<class T, size_t size, bool radians>
 NMath::CAngle<T, size, radians> NMath::CAngle<T, size, radians>::Max(const CAngle & a) const
 {
-	NMath::CAngle<T, size, radians> temp;
+	CAngle<T, size, radians> temp;
 
 	for (size_t i = 0; i < size; ++i)
 		temp.data[i] = NMath::Max(data[i], a.data[i]);
 
-	return *this;
+	return temp;
 }
 
 template<class T, size_t size, bool radians>
 NMath::CAngle<T, size, radians> NMath::CAngle<T, size, radians>::Clamp(const CAngle & min, const CAngle & max) const
 {
-	NMath::CAngle<T, size, radians> temp;
+	CAngle<T, size, radians> temp;
 
 	for (int i = 0; i < size; ++i)
 		temp[i] = NMath::Clamp(data[i], min.data[i], max.data[i]);
@@ -946,13 +948,19 @@ void NMath::CAngle<T, size, radians>::Lerp(const CAngle & a, T factor)
 template<class T, size_t size, bool radians>
 NMath::CAngle<T, size, radians> NMath::CAngle<T, size, radians>::Normalized() const
 {
-	
+	CAngle<T, size, radians> temp;
+
+	for (size_t i = 0; i < size; ++i)
+		temp.data[i] = NormalizeAngle(data[i]);
+
+	return temp;
 }
 
 template<class T, size_t size, bool radians>
 void NMath::CAngle<T, size, radians>::NormalizeInPlace()
 {
-	
+	for (size_t i = 0; i < size; ++i)
+		data[i] = NormalizeAngle(data[i]);
 }
 
 
