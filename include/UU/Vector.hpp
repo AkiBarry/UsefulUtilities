@@ -460,11 +460,11 @@ NMath::CAngle<U, size * (size - 1) / 2, radians> NMath::CVector<T, size>::ToCAng
 
 	if constexpr (size == 1)
 	{
-		temp = CAngle<U, size, radians>(U());
+		temp = CAngle<U, size, radians>(U(normalized_vec.data[0] >= T() ? U() : U(DBL_PI / 2)));
 	}
 	else if constexpr (size == 2)
 	{
-		temp = CAngle<U, size, radians>(NMath::ATan2(U(normalized_vec.data[1]), U(normalized_vec.data[0])), U());
+		temp = CAngle<U, size, radians>(U(NMath::ATan2(normalized_vec.data[1], normalized_vec.data[0])), U());
 	}
 	else if constexpr (size == 3)
 	{

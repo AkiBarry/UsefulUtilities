@@ -83,73 +83,73 @@ namespace NMath
 	template <class T>
 	T NormalizeAngle(T angle);
 
-	float Mod(float a, float b);
-	double Mod(double a, double b);
+	inline float Mod(float a, float b);
+	inline double Mod(double a, double b);
 
-	float Sin(float val);
-	float Cos(float val);
-	float Tan(float val);
+	inline float Sin(float val);
+	inline float Cos(float val);
+	inline float Tan(float val);
 
-	void SinCos(float val, float & sin_val, float & cos_val);
+	inline void SinCos(float val, float & sin_val, float & cos_val);
 
-	double Sin(double val);
-	double Cos(double val);
-	double Tan(double val);
+	inline double Sin(double val);
+	inline double Cos(double val);
+	inline double Tan(double val);
 
-	void SinCos(double val, double & sin_val, double & cos_val);
+	inline void SinCos(double val, double & sin_val, double & cos_val);
 
-	float ASin(float val);
-	float ACos(float val);
-	float ATan(float val);
-	float ATan2(float y, float x);
+	inline float ASin(float val);
+	inline float ACos(float val);
+	inline float ATan(float val);
+	inline float ATan2(float y, float x);
 
-	double ASin(double val);
-	double ACos(double val);
-	double ATan(double val);
-	double ATan2(double y, double x);
+	inline double ASin(double val);
+	inline double ACos(double val);
+	inline double ATan(double val);
+	inline double ATan2(double y, double x);
 
-	float Sqrt(float val);
-	float InvSqrt(float val);
+	inline float Sqrt(float val);
+	inline float InvSqrt(float val);
 
-	double Sqrt(double val);
-	double InvSqrt(double val);
+	inline double Sqrt(double val);
+	inline double InvSqrt(double val);
 
-	float Exp(float val);
-	float Ln(float val);
-	float Pow(float a, float b);
+	inline float Exp(float val);
+	inline float Ln(float val);
+	inline float Pow(float a, float b);
 
-	double Exp(double val);
-	double Ln(double val);
-	double Pow(double a, double b);
+	inline double Exp(double val);
+	inline double Ln(double val);
+	inline double Pow(double a, double b);
 
-	float Floor(float val);
-	float Ceil(float val);
-	float Trunc(float val);
-	float Round(float val);
+	inline float Floor(float val);
+	inline float Ceil(float val);
+	inline float Trunc(float val);
+	inline float Round(float val);
 
-	double Floor(double val);
-	double Ceil(double val);
-	double Trunc(double val);
-	double Round(double val);
+	inline double Floor(double val);
+	inline double Ceil(double val);
+	inline double Trunc(double val);
+	inline double Round(double val);
 
-	bool IsNormal(float val);
-	bool IsFinite(float val);
-	bool IsNan(float val);
-	bool IsInf(float val);
+	inline bool IsNormal(float val);
+	inline bool IsFinite(float val);
+	inline bool IsNan(float val);
+	inline bool IsInf(float val);
 
-	bool IsNormal(double val);
-	bool IsFinite(double val);
-	bool IsNan(double val);
-	bool IsInf(double val);
+	inline bool IsNormal(double val);
+	inline bool IsFinite(double val);
+	inline bool IsNan(double val);
+	inline bool IsInf(double val);
 
-	float Hypot(float x, float y);
-	double Hypot(double x, double y);
+	inline float Hypot(float x, float y);
+	inline double Hypot(double x, double y);
 
-	float RadToDeg(float angle);
-	float DegToRad(float angle);
+	inline float RadToDeg(float angle);
+	inline float DegToRad(float angle);
 
-	double RadToDeg(double angle);
-	double DegToRad(double angle);
+	inline double RadToDeg(double angle);
+	inline double DegToRad(double angle);
 }
 
 template <class T>
@@ -197,3 +197,256 @@ T NMath::NormalizeAngle(T angle)
 {
 	return fmod(angle + T(180), T(360)) - T(180);
 }
+
+float NMath::Mod(const float a, const float b)
+{
+	return fmodf(a, b);
+}
+
+double NMath::Mod(const double a, const double b)
+{
+	return fmod(a, b);
+}
+
+float NMath::Sin(const float val)
+{
+	return sinf(val);
+}
+
+float NMath::Cos(const float val)
+{
+	return cosf(val);
+}
+
+float NMath::Tan(const float val)
+{
+	return tanf(val);
+}
+
+void NMath::SinCos(float val, float & sin_val, float & cos_val)
+{
+	sin_val = Sin(val);
+	cos_val = Cos(val);
+}
+
+double NMath::Sin(const double val)
+{
+	return sin(val);
+}
+
+double NMath::Cos(const double val)
+{
+	return cos(val);
+}
+
+double NMath::Tan(const double val)
+{
+	return tan(val);
+}
+
+void NMath::SinCos(double val, double & sin_val, double & cos_val)
+{
+	sin_val = Sin(val);
+	cos_val = Cos(val);
+}
+
+float NMath::ASin(const float val)
+{
+	return asinf(val);
+}
+
+float NMath::ACos(const float val)
+{
+	return acosf(val);
+}
+
+float NMath::ATan(const float val)
+{
+	return atanf(val);
+}
+
+float NMath::ATan2(const float y, const float x)
+{
+	return atan2f(y, x);
+}
+
+double NMath::ASin(const double val)
+{
+	return asin(val);
+}
+
+double NMath::ACos(const double val)
+{
+	return acos(val);
+}
+
+double NMath::ATan(const double val)
+{
+	return atan(val);
+}
+
+double NMath::ATan2(const double y, const double x)
+{
+	return atan2(y, x);
+}
+
+float NMath::Sqrt(const float val)
+{
+	return sqrtf(val);
+}
+
+float NMath::InvSqrt(const float val)
+{
+	return 1.f / sqrtf(val);
+}
+
+double NMath::Sqrt(const double val)
+{
+	return sqrt(val);
+}
+
+double NMath::InvSqrt(const double val)
+{
+	return 1.0 / sqrt(val);
+}
+
+float NMath::Exp(const float val)
+{
+	return expf(val);
+}
+
+float NMath::Ln(const float val)
+{
+	return logf(val);
+}
+
+float NMath::Pow(const float a, const float b)
+{
+	return powf(a, b);
+}
+
+double NMath::Exp(const double val)
+{
+	return exp(val);
+}
+
+double NMath::Ln(const double val)
+{
+	return log(val);
+}
+
+double NMath::Pow(const double a, const double b)
+{
+	return pow(a, b);
+}
+
+float NMath::Floor(const float val)
+{
+	return floorf(val);
+}
+
+float NMath::Ceil(const float val)
+{
+	return ceilf(val);
+}
+
+float NMath::Trunc(const float val)
+{
+	return truncf(val);
+}
+
+float NMath::Round(const float val)
+{
+	return roundf(val);
+}
+
+double NMath::Floor(const double val)
+{
+	return floor(val);
+}
+
+double NMath::Ceil(const double val)
+{
+	return ceil(val);
+}
+
+double NMath::Trunc(const double val)
+{
+	return trunc(val);
+}
+
+double NMath::Round(const double val)
+{
+	return round(val);
+}
+
+bool NMath::IsNormal(const float val)
+{
+	return isnormal(val);
+}
+
+bool NMath::IsFinite(const float val)
+{
+	return isfinite(val);
+}
+
+bool NMath::IsNan(const float val)
+{
+	return isnan(val);
+}
+
+bool NMath::IsInf(const float val)
+{
+	return isinf(val);
+}
+
+bool NMath::IsNormal(const double val)
+{
+	return isnormal(val);
+}
+
+bool NMath::IsFinite(const double val)
+{
+	return isfinite(val);
+}
+
+bool NMath::IsNan(const double val)
+{
+	return isnan(val);
+}
+
+bool NMath::IsInf(const double val)
+{
+	return isinf(val);
+}
+
+float NMath::Hypot(const float x, const float y)
+{
+	return hypotf(x, y);
+}
+
+double NMath::Hypot(const double x, const double y)
+{
+	return hypot(x, y);
+}
+
+float NMath::RadToDeg(float angle)
+{
+	return angle * 180.f / FLT_PI;
+}
+
+float NMath::DegToRad(float angle)
+{
+	return angle * FLT_PI / 180.f;
+}
+
+double NMath::RadToDeg(double angle)
+{
+	return angle * 180.0 / DBL_PI;
+}
+
+double NMath::DegToRad(double angle)
+{
+	return angle * DBL_PI / 180.0;
+}
+
