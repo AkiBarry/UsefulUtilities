@@ -278,6 +278,8 @@ T NMath::CMatrix<T, rows, columns>::Det() const
 {
 	static_assert(rows == columns);
 
+	T det = T();
+
 	constexpr size_t N = rows;
 
 	if constexpr (N == 2)
@@ -285,12 +287,25 @@ T NMath::CMatrix<T, rows, columns>::Det() const
 		return data[0][0] * data[1][1] - data[0][1] * data[1][0];
 	}
 
+	for (size_t i = 0; i < N; i++) {
+
+		CMatrix<T, rows - 1, columns - 1> submatrix;
+
+		
+		for (size_t j = 1; j < N; j++) {
+			size_t sub_k = 0;
+			for (size_t k = 0; k < N; k++) {
+				if (k == i)
+					continue;
+				submatrix[j - 1][sub_k] = data[j][k];
+				++sub_k;
+			}
+		}
+
+		det += ((N % 2 ? T(1) : -T(1)) * data[0][i] * submatrix.Det());
+	}
+
 	return T();
-	/*
-	for (int i = 0; i < rows; ++i)
-		for (int j = i+1; j < columns; ++j)
-			data[i][j] = -data[i][j];
-	*/
 }
 
 template<class T, size_t rows, size_t columns>
