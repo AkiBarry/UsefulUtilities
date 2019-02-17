@@ -456,19 +456,19 @@ template<class U, bool radians>
 NMath::CAngle<U, size * (size - 1) / 2, radians> NMath::CVector<T, size>::ToCAngle() const
 {
 	auto normalized_vec = this->Normalized();
-	CAngle<U, size, radians> temp;
+	CAngle<U, size * (size - 1) / 2, radians> temp;
 
 	if constexpr (size == 1)
 	{
-		temp = CAngle<U, size, radians>(U(normalized_vec.data[0] >= T() ? U() : U(DBL_PI / 2)));
+		temp = CAngle<U, size * (size - 1) / 2, radians>(U(normalized_vec.data[0] >= T() ? U() : U(DBL_PI / 2)));
 	}
 	else if constexpr (size == 2)
 	{
-		temp = CAngle<U, size, radians>(U(NMath::ATan2(normalized_vec.data[1], normalized_vec.data[0])), U());
+		temp = CAngle<U, size * (size - 1) / 2, radians>(U(NMath::ATan2(normalized_vec.data[1], normalized_vec.data[0])), U());
 	}
 	else if constexpr (size == 3)
 	{
-		temp = CAngle<U, size, radians>(NMath::ASin(U(normalized_vec.data[2])), NMath::ATan2(U(normalized_vec.data[1]), U(normalized_vec.data[0])), U());
+		temp = CAngle<U, size * (size - 1) / 2, radians>(NMath::ASin(U(normalized_vec.data[2])), NMath::ATan2(U(normalized_vec.data[1]), U(normalized_vec.data[0])), U());
 	}
 	else
 	{

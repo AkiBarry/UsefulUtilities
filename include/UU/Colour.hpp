@@ -8,7 +8,7 @@ class CColour
 {
 public:
 
-	uint8_t				r{}, g{}, b{}, a{};
+	uint8_t				r, g, b, a;
 
 	CColour() : r(0), g(0), b(0), a(0) {}
 
