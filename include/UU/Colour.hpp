@@ -4,54 +4,61 @@
 
 class CHSB;
 
-class CColour
+class CColour final
 {
 public:
 
-	uint8_t				r, g, b, a;
+	uint8_t							r, g, b, a;
 
-	CColour() : r(0), g(0), b(0), a(0) {}
+	CColour() : r(0), g(0), b(0), a(255) {}
+	CColour(const CColour & c) = default;
 
-	CColour(int x, int y, int z)
-		: r(static_cast<uint8_t>(x)), g(static_cast<uint8_t>(y)), b(static_cast<uint8_t>(z)), a(255) {}
+	CColour(uint8_t x, uint8_t y, uint8_t z)
+		: r(x), g(y), b(z), a(255) {}
 
-	CColour(int x, int y, int z, int w)
-		: r(static_cast<uint8_t>(x)), g(static_cast<uint8_t>(y)), b(static_cast<uint8_t>(z)), a(static_cast<uint8_t>(w)) {}
+	CColour(uint8_t x, uint8_t y, uint8_t z, uint8_t w)
+		: r(x), g(y), b(z), a(w) {}
+
+	CColour(int32_t x, int32_t y, int32_t z)
+		: CColour(static_cast<uint8_t>(x), static_cast<uint8_t>(y), static_cast<uint8_t>(z), static_cast<uint8_t>(255)) {}
+
+	CColour(int32_t x, int32_t y, int32_t z, int32_t w)
+		: CColour(static_cast<uint8_t>(x), static_cast<uint8_t>(y), static_cast<uint8_t>(z), static_cast<uint8_t>(w)) {}
 
 	CColour(const uint32_t c);
 
-	uint8_t &					operator[](const int i);
-	uint8_t						operator[](const int i) const;
+	uint8_t &						operator[](int i);
+	uint8_t							operator[](int i) const;
 
-	uint8_t *					Base();
-	uint8_t const *				Base() const;
+	uint8_t *						Base();
+	uint8_t const *					Base() const;
 
-	void						CopyToArray(uint8_t* c) const;
+	void							CopyToArray(uint8_t* c) const;
 
-	CColour &					operator=(const CColour c);
+	CColour &						operator=(const CColour & c);
 
-	bool						operator==(const CColour c) const;
-	bool						operator!=(const CColour c) const;
+	bool							operator==(CColour c) const;
+	bool							operator!=(CColour c) const;
 
-	uint32_t					ToD3DColour() const;
-	CHSB						ToHSB() const;
-	NMath::CVec4f				ToVector() const;
+	uint32_t						ToD3DColour() const;
+	CHSB							ToHSB() const;
+	NMath::CVec4f					ToVector() const;
 
-	uint32_t &					AsRawColour();
-	const uint32_t &			AsRawColour() const;
+	uint32_t &						AsRawColour();
+	const uint32_t &				AsRawColour() const;
 
-	float						Hue() const;
-	float						Saturation() const;
-	float						Brightness() const;
+	float							Hue() const;
+	float							Saturation() const;
+	float							Brightness() const;
 
-	static CColour				Black;
-	static CColour				White;
-	static CColour				Red;
-	static CColour				Green;
-	static CColour				Blue;
-	static CColour				Yellow;
-	static CColour				Cyan;
-	static CColour				Magenta;
+	static const		CColour		Black;
+	static const		CColour		White;
+	static const		CColour		Red;
+	static const		CColour		Green;
+	static const		CColour		Blue;
+	static const		CColour		Yellow;
+	static const		CColour		Cyan;
+	static const		CColour		Magenta;
 };
 
 class CHSB
@@ -82,14 +89,16 @@ public:
 
 // CColour - Static Values
 
-CColour CColour::Black(0, 0, 0);
-CColour CColour::White(255, 255, 255);
-CColour CColour::Red(255, 0, 0);
-CColour CColour::Green(0, 255, 0);
-CColour CColour::Blue(0, 0, 255);
-CColour CColour::Yellow(255, 255, 0);
-CColour CColour::Cyan(0, 255, 255);
-CColour CColour::Magenta(255, 0, 255);
+
+const CColour CColour::Black(0, 0, 0);
+const CColour CColour::White(255, 255, 255);
+const CColour CColour::Red(255, 0, 0);
+const CColour CColour::Green(0, 255, 0);
+const CColour CColour::Blue(0, 0, 255);
+const CColour CColour::Yellow(255, 255, 0);
+const CColour CColour::Cyan(0, 255, 255);
+const CColour CColour::Magenta(255, 0, 255);
+
 
 // CColour - Function Definitions
 
@@ -98,12 +107,12 @@ inline CColour::CColour(const uint32_t c)
 	*reinterpret_cast<uint32_t *>(this) = c;
 }
 
-inline uint8_t & CColour::operator[](const int i)
+inline uint8_t & CColour::operator[](int i)
 {
 	return reinterpret_cast<uint8_t *>(this)[i];
 }
 
-inline uint8_t CColour::operator[](const int i) const
+inline uint8_t CColour::operator[](int i) const
 {
 	return reinterpret_cast<const uint8_t *>(this)[i];
 }
@@ -123,19 +132,19 @@ inline void CColour::CopyToArray(uint8_t* c) const
 	*reinterpret_cast<uint32_t *>(c) = *reinterpret_cast<uint32_t const *>(this);
 }
 
-inline CColour & CColour::operator=(const CColour c)
+inline CColour & CColour::operator=(const CColour & c)
 {
 	*reinterpret_cast<uint32_t *>(this) = *reinterpret_cast<const uint32_t *>(&c);
 
 	return *this;
 }
 
-inline bool CColour::operator==(const CColour c) const
+inline bool CColour::operator==(CColour c) const
 {
 	return *reinterpret_cast<const uint32_t *>(this) == *reinterpret_cast<const uint32_t *>(&c);
 }
 
-inline bool CColour::operator!=(const CColour c) const
+inline bool CColour::operator!=(CColour c) const
 {
 	return *reinterpret_cast<const uint32_t *>(this) != *reinterpret_cast<const uint32_t*>(&c);
 }
