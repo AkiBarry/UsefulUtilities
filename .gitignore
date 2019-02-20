@@ -3,3 +3,11 @@
 *.sln
 *.vcxproj
 *.filters
+*.obj
+*.exe
+*.iobj
+*.ipdb
+*.log
+*.pdb
+*.tlog
+*.cpp
