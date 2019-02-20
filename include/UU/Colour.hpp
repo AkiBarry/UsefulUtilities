@@ -12,6 +12,7 @@ public:
 
 	CColour() : r(0), g(0), b(0), a(255) {}
 	CColour(const CColour & col) = default;
+	CColour(CColour && col) = default;
 
 	CColour(uint8_t x, uint8_t y, uint8_t z)
 		: r(x), g(y), b(z), a(255) {}
@@ -36,6 +37,7 @@ public:
 	void							CopyToArray(uint8_t * col) const;
 
 	CColour &						operator=(const CColour & col) = default;
+	CColour &						operator=(CColour && col) = default;
 
 	bool							operator==(CColour col) const;
 	bool							operator!=(CColour col) const;
