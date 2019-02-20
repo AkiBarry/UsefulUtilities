@@ -18,10 +18,10 @@ public:
 	T *												operator[](size_t i);
 	const T *										operator[](size_t i) const;
 
-	CMatrix &										operator=(const CMatrix& m);
+	CMatrix &										operator=(const CMatrix & m);
 
-	CMatrix &										operator+=(const CMatrix& m);
-	CMatrix &										operator-=(const CMatrix& m);
+	CMatrix &										operator+=(const CMatrix & m);
+	CMatrix &										operator-=(const CMatrix & m);
 
 	template<class U>
 	CMatrix &										operator*=(const CMatrix<U, columns, columns>& m);
@@ -29,8 +29,8 @@ public:
 	CMatrix &										operator*=(const T t);
 	CMatrix &										operator/=(const T t);
 
-	CMatrix											operator+(const CMatrix& m) const;
-	CMatrix											operator-(const CMatrix& m) const;
+	CMatrix											operator+(const CMatrix & m) const;
+	CMatrix											operator-(const CMatrix & m) const;
 
 	template<class U, size_t columns1>
 	CMatrix<decltype(T() * U()), rows, columns1> &	operator*(const CMatrix<U, columns, columns1>& m);
@@ -38,8 +38,8 @@ public:
 	CMatrix											operator*(T t) const;
 	CMatrix											operator/(T t) const;
 
-	bool											operator==(const CMatrix& m) const;
-	bool											operator!=(const CMatrix& m) const;
+	bool											operator==(const CMatrix & m) const;
+	bool											operator!=(const CMatrix & m) const;
 
 	T												Det() const;
 

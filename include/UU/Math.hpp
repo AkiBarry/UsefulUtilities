@@ -83,73 +83,73 @@ namespace NMath
 	template <class T>
 	T NormalizeAngle(T angle);
 
-	inline float Mod(float a, float b);
-	inline double Mod(double a, double b);
+	inline float	Mod(float a, float b);
+	inline double	Mod(double a, double b);
 
-	inline float Sin(float val);
-	inline float Cos(float val);
-	inline float Tan(float val);
+	inline float	Sin(float val);
+	inline float	Cos(float val);
+	inline float	Tan(float val);
 
-	inline void SinCos(float val, float & sin_val, float & cos_val);
+	inline void		SinCos(float val, float & sin_val, float & cos_val);
 
-	inline double Sin(double val);
-	inline double Cos(double val);
-	inline double Tan(double val);
+	inline double	Sin(double val);
+	inline double	Cos(double val);
+	inline double	Tan(double val);
 
-	inline void SinCos(double val, double & sin_val, double & cos_val);
+	inline void		SinCos(double val, double & sin_val, double & cos_val);
 
-	inline float ASin(float val);
-	inline float ACos(float val);
-	inline float ATan(float val);
-	inline float ATan2(float y, float x);
+	inline float	ASin(float val);
+	inline float	ACos(float val);
+	inline float	ATan(float val);
+	inline float	ATan2(float y, float x);
 
-	inline double ASin(double val);
-	inline double ACos(double val);
-	inline double ATan(double val);
-	inline double ATan2(double y, double x);
+	inline double	ASin(double val);
+	inline double	ACos(double val);
+	inline double	ATan(double val);
+	inline double	ATan2(double y, double x);
 
-	inline float Sqrt(float val);
-	inline float InvSqrt(float val);
+	inline float	Sqrt(float val);
+	inline float	InvSqrt(float val);
 
-	inline double Sqrt(double val);
-	inline double InvSqrt(double val);
+	inline double	Sqrt(double val);
+	inline double	InvSqrt(double val);
 
-	inline float Exp(float val);
-	inline float Ln(float val);
-	inline float Pow(float a, float b);
+	inline float	Exp(float val);
+	inline float	Ln(float val);
+	inline float	Pow(float a, float b);
 
-	inline double Exp(double val);
-	inline double Ln(double val);
-	inline double Pow(double a, double b);
+	inline double	Exp(double val);
+	inline double	Ln(double val);
+	inline double	Pow(double a, double b);
 
-	inline float Floor(float val);
-	inline float Ceil(float val);
-	inline float Trunc(float val);
-	inline float Round(float val);
+	inline float	Floor(float val);
+	inline float	Ceil(float val);
+	inline float	Trunc(float val);
+	inline float	Round(float val);
 
-	inline double Floor(double val);
-	inline double Ceil(double val);
-	inline double Trunc(double val);
-	inline double Round(double val);
+	inline double	Floor(double val);
+	inline double	Ceil(double val);
+	inline double	Trunc(double val);
+	inline double	Round(double val);
 
-	inline bool IsNormal(float val);
-	inline bool IsFinite(float val);
-	inline bool IsNan(float val);
-	inline bool IsInf(float val);
+	inline bool		IsNormal(float val);
+	inline bool		IsFinite(float val);
+	inline bool		IsNan(float val);
+	inline bool		IsInf(float val);
 
-	inline bool IsNormal(double val);
-	inline bool IsFinite(double val);
-	inline bool IsNan(double val);
-	inline bool IsInf(double val);
+	inline bool		IsNormal(double val);
+	inline bool		IsFinite(double val);
+	inline bool		IsNan(double val);
+	inline bool		IsInf(double val);
 
-	inline float Hypot(float x, float y);
-	inline double Hypot(double x, double y);
+	inline float	Hypot(float x, float y);
+	inline double	Hypot(double x, double y);
 
-	inline float RadToDeg(float angle);
-	inline float DegToRad(float angle);
+	inline float	RadToDeg(float angle);
+	inline float	DegToRad(float angle);
 
-	inline double RadToDeg(double angle);
-	inline double DegToRad(double angle);
+	inline double	RadToDeg(double angle);
+	inline double	DegToRad(double angle);
 }
 
 template <class T>

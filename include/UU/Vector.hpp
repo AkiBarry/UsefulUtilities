@@ -5,7 +5,7 @@
 #include <ostream>
 
 template <class T, size_t size>
-class NMath::CVector final
+class NMath::CVector
 {
 private:
 	T data[size];
@@ -24,30 +24,30 @@ public:
 
 	void							Zero();
 
-	T&								operator[](size_t i);
+	T &								operator[](size_t i);
 	T								operator[](size_t i) const;
 
-	T*								Base();
-	T const*						Base() const;
+	T *								Base();
+	T const *						Base() const;
 
-	void							CopyToArray(T* t) const;
+	void							CopyToArray(T * t) const;
 
-	CVector&						operator=(const CVector& v);
-	CVector&						operator=(CVector&& v) noexcept = default;
+	CVector &						operator=(const CVector & v);
+	CVector &						operator=(CVector && v) noexcept = default;
 
-	CVector&						operator+=(const CVector& v);
-	CVector&						operator-=(const CVector& v);
-	CVector&						operator*=(T t);
-	CVector&						operator/=(T t);
+	CVector &						operator+=(const CVector & v);
+	CVector &						operator-=(const CVector & v);
+	CVector &						operator*=(T t);
+	CVector &						operator/=(T t);
 
-	CVector							operator+(const CVector& v) const;
-	CVector							operator-(const CVector& v) const;
+	CVector							operator+(const CVector & v) const;
+	CVector							operator-(const CVector & v) const;
 	CVector							operator-() const;
 	CVector							operator*(T t) const;
 	CVector							operator/(T t) const;
 
-	bool							operator==(const CVector& v) const;
-	bool							operator!=(const CVector& v) const;
+	bool							operator==(const CVector & v) const;
+	bool							operator!=(const CVector & v) const;
 
 	T								Length() const;
 	T								LengthSqr() const;
@@ -55,13 +55,13 @@ public:
 	bool							IsLengthGreaterThan(T val) const;
 	bool							IsLengthLesserThan(T val) const;
 
-	T								DistTo(const CVector& v) const;
-	T								DistToSqr(const CVector& v) const;
+	T								DistTo(const CVector & v) const;
+	T								DistToSqr(const CVector & v) const;
 
 	//CVector						Rotated(const CAng& a) const;
 	//void							RotateInPlace(const CAng& a);
 
-	bool							WithinAABox(const CVector& min, const CVector& max) const;
+	bool							WithinAABox(const CVector & min, const CVector & max) const;
 
 	template<class U, bool radians = false>
 	CAngle<U, size * (size - 1) / 2, radians>		ToCAngle() const;
@@ -104,7 +104,7 @@ public:
 	}
 
 	template<typename U, size_t size1, bool radians>
-	friend class NMath::CAngle;
+	friend class CAngle;
 };
 
 template <class T, size_t size, bool radians = false>
@@ -126,22 +126,22 @@ public:
 	T *							Base();
 	T const *					Base() const;
 
-	void						CopyToArray(T *t) const;
+	void						CopyToArray(T * t) const;
 
-	CAngle &					operator=(const CAngle &a);
+	CAngle &					operator=(const CAngle & a);
 
-	CAngle &					operator+=(const CAngle &a);
-	CAngle &					operator-=(const CAngle &a);
+	CAngle &					operator+=(const CAngle & a);
+	CAngle &					operator-=(const CAngle & a);
 	CAngle &					operator*=(T t);
 	CAngle &					operator/=(T t);
 
-	CAngle						operator+(const CAngle &a) const;
-	CAngle						operator-(const CAngle &a) const;
+	CAngle						operator+(const CAngle & a) const;
+	CAngle						operator-(const CAngle & a) const;
 	CAngle						operator*(T t) const;
 	CAngle						operator/(T t) const;
 
-	bool						operator==(const CAngle &a) const;
-	bool						operator!=(const CAngle &a) const;
+	bool						operator==(const CAngle & a) const;
+	bool						operator!=(const CAngle & a) const;
 
 	T							Length() const;
 	T							LengthSqr() const;
@@ -155,17 +155,17 @@ public:
 	void						Negate();
 	bool						IsValid() const;
 
-	CAngle						Min(const CAngle &a) const;
-	CAngle						Max(const CAngle &a) const;
-	CAngle						Clamp(const CAngle &min, const CAngle &max) const;
+	CAngle						Min(const CAngle & a) const;
+	CAngle						Max(const CAngle & a) const;
+	CAngle						Clamp(const CAngle & min, const CAngle & max) const;
 
-	void						Randomize(const CAngle &min, const CAngle &max);
-	void						Lerp(const CAngle &a, T factor);
+	void						Randomize(const CAngle & min, const CAngle & max);
+	void						Lerp(const CAngle & a, T factor);
 
 	CAngle						Normalized() const;
 	void						NormalizeInPlace();
 
-	friend std::ostream& operator<<(std::ostream& os, const CAngle<T, size, radians>& a)
+	friend std::ostream & operator<<(std::ostream & os, const CAngle<T, size, radians> & a)
 	{
 		os << "(";
 
@@ -452,7 +452,7 @@ bool NMath::CVector<T, size>::WithinAABox(const CVector& min, const CVector& max
 }
 
 template<class T, size_t size>
-template<class U, bool radians>
+template<class U, bool radians /*= false*/>
 NMath::CAngle<U, size * (size - 1) / 2, radians> NMath::CVector<T, size>::ToCAngle() const
 {
 	auto normalized_vec = this->Normalized();
