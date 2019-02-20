@@ -11,7 +11,7 @@ public:
 	uint8_t							r, g, b, a;
 
 	CColour() : r(0), g(0), b(0), a(255) {}
-	CColour(const CColour & c) = default;
+	CColour(const CColour & col) = default;
 
 	CColour(uint8_t x, uint8_t y, uint8_t z)
 		: r(x), g(y), b(z), a(255) {}
@@ -25,7 +25,7 @@ public:
 	CColour(int32_t x, int32_t y, int32_t z, int32_t w)
 		: CColour(static_cast<uint8_t>(x), static_cast<uint8_t>(y), static_cast<uint8_t>(z), static_cast<uint8_t>(w)) {}
 
-	CColour(const uint32_t c);
+	CColour(uint32_t c);
 
 	uint8_t &						operator[](int i);
 	uint8_t							operator[](int i) const;
@@ -33,12 +33,12 @@ public:
 	uint8_t *						Base();
 	uint8_t const *					Base() const;
 
-	void							CopyToArray(uint8_t* c) const;
+	void							CopyToArray(uint8_t * col) const;
 
-	CColour &						operator=(const CColour & c);
+	CColour &						operator=(const CColour & col) = default;
 
-	bool							operator==(CColour c) const;
-	bool							operator!=(CColour c) const;
+	bool							operator==(CColour col) const;
+	bool							operator!=(CColour col) const;
 
 	uint32_t						ToD3DColour() const;
 	CHSB							ToHSB() const;
@@ -61,28 +61,28 @@ public:
 	static const		CColour		Magenta;
 };
 
-class CHSB
+class CHSB final
 {
 public:
 
 	float			h, s, b;
 
-	CHSB() : h(0.0f), s(0.0f), b(0.0f) {}
+	CHSB() : h(0.f), s(0.f), b(0.f) {}
 
-	CHSB(const float x, const float y, const float z) : h(x), s(y), b(z) {}
+	CHSB(float x, float y, float z) : h(x), s(y), b(z) {}
 
-	float &			operator[](const int i);
-	float			operator[](const int i) const;
+	float &			operator[](int i);
+	float			operator[](int i) const;
 
 	float *			Base();
 	float const *	Base() const;
 
 	void			CopyToArray(float* f) const;
 
-	CHSB &			operator=(const CHSB c);
+	CHSB &			operator=(const CHSB & hsb) = default;
 
-	bool			operator==(const CHSB c) const;
-	bool			operator!=(const CHSB c) const;
+	bool			operator==(const CHSB & hsb) const;
+	bool			operator!=(const CHSB & hsb) const;
 
 	CColour			ToColour() const;
 };
@@ -102,7 +102,7 @@ const CColour CColour::Magenta(255, 0, 255);
 
 // CColour - Function Definitions
 
-inline CColour::CColour(const uint32_t c)
+inline CColour::CColour(uint32_t c)
 {
 	*reinterpret_cast<uint32_t *>(this) = c;
 }
@@ -127,42 +127,35 @@ inline uint8_t const * CColour::Base() const
 	return reinterpret_cast<uint8_t const *>(this);
 }
 
-inline void CColour::CopyToArray(uint8_t* c) const
+inline void CColour::CopyToArray(uint8_t * col) const
 {
-	*reinterpret_cast<uint32_t *>(c) = *reinterpret_cast<uint32_t const *>(this);
+	*reinterpret_cast<uint32_t *>(col) = *reinterpret_cast<uint32_t const *>(this);
 }
 
-inline CColour & CColour::operator=(const CColour & c)
+inline bool CColour::operator==(CColour col) const
 {
-	*reinterpret_cast<uint32_t *>(this) = *reinterpret_cast<const uint32_t *>(&c);
-
-	return *this;
+	return *reinterpret_cast<const uint32_t *>(this) == *reinterpret_cast<const uint32_t *>(&col);
 }
 
-inline bool CColour::operator==(CColour c) const
+inline bool CColour::operator!=(CColour col) const
 {
-	return *reinterpret_cast<const uint32_t *>(this) == *reinterpret_cast<const uint32_t *>(&c);
-}
-
-inline bool CColour::operator!=(CColour c) const
-{
-	return *reinterpret_cast<const uint32_t *>(this) != *reinterpret_cast<const uint32_t*>(&c);
+	return *reinterpret_cast<const uint32_t *>(this) != *reinterpret_cast<const uint32_t*>(&col);
 }
 
 inline uint32_t CColour::ToD3DColour() const
 {
-	return static_cast<uint32_t>(((a & 0xff) << 24) | ((r & 0xff) << 16) | ((g & 0xff) << 8) | (b & 0xff));
+	return static_cast<uint32_t>((a << 24) | (r << 16) | (g << 8) | b);
 }
 
 inline CHSB CColour::ToHSB() const
 {
 	CHSB temp;
-	const float _r = r / 255.0f;
-	const float _g = g / 255.0f;
-	const float _b = b / 255.0f;
+	const float _r = r / 255.0f,
+				_g = g / 255.0f,
+				_b = b / 255.0f;
 
 	const float max = _r > _g ? _r : _g > _b ? _g : _b,
-		min = _r < _g ? _r : _g < _b ? _g : _b;
+				min = _r < _g ? _r : _g < _b ? _g : _b;
 
 	temp.b = (max + min) / 2.0f;
 
@@ -188,7 +181,7 @@ inline CHSB CColour::ToHSB() const
 
 	hue *= 60;
 
-	if (hue < 0.0f)
+	if (hue < 0.f)
 		hue += 360.0f;
 
 	temp.h = hue;
@@ -198,7 +191,7 @@ inline CHSB CColour::ToHSB() const
 
 inline NMath::CVec4f CColour::ToVector() const
 {
-	return NMath::CVector<float, 4>(r / 255.f, g / 255.f, b / 255.f);
+	return NMath::CVec4f{ r / 255.f, g / 255.f, b / 255.f };
 }
 
 inline uint32_t & CColour::AsRawColour()
@@ -214,16 +207,16 @@ inline const uint32_t & CColour::AsRawColour() const
 inline float CColour::Hue() const
 {
 	if (r == g && g == b)
-		return 0.0f;
+		return 0.f;
 
-	float _r = r / 255.0f;
-	float _g = g / 255.0f;
-	float _b = b / 255.0f;
+	const float _r = r / 255.0f,
+				_g = g / 255.0f,
+				_b = b / 255.0f;
 
-	float max = _r > _g ? _r : _g > _b ? _g : _b,
-		min = _r < _g ? _r : _g < _b ? _g : _b;
-	float delta = max - min;
-	float hue = 0.0f;
+	const float max = _r > _g ? _r : _g > _b ? _g : _b,
+				min = _r < _g ? _r : _g < _b ? _g : _b;
+	const float delta = max - min;
+	float hue = 0.f;
 
 	if (_r == max)
 	{
@@ -239,7 +232,7 @@ inline float CColour::Hue() const
 	}
 	hue *= 60;
 
-	if (hue < 0.0f)
+	if (hue < 0.f)
 	{
 		hue += 360.0f;
 	}
@@ -248,11 +241,11 @@ inline float CColour::Hue() const
 
 inline float CColour::Saturation() const
 {
-	float _r = r / 255.0f;
-	float _g = g / 255.0f;
-	float _b = b / 255.0f;
+	const float _r = r / 255.0f,
+				_g = g / 255.0f,
+				_b = b / 255.0f;
 
-	float max = _r > _g ? _r : _g > _b ? _g : _b,
+	const float max = _r > _g ? _r : _g > _b ? _g : _b,
 		min = _r < _g ? _r : _g < _b ? _g : _b;
 	float l, s = 0;
 
@@ -269,12 +262,12 @@ inline float CColour::Saturation() const
 
 inline float CColour::Brightness() const
 {
-	float _r = r / 255.0f;
-	float _g = g / 255.0f;
-	float _b = b / 255.0f;
+	const float _r = r / 255.0f,
+				_g = g / 255.0f,
+				_b = b / 255.0f;
 
-	float max = _r > _g ? _r : _g > _b ? _g : _b,
-		min = _r < _g ? _r : _g < _b ? _g : _b;
+	const float	max = _r > _g ? _r : _g > _b ? _g : _b,
+				min = _r < _g ? _r : _g < _b ? _g : _b;
 	return (max + min) / 2.0f;
 }
 
@@ -307,23 +300,14 @@ inline void CHSB::CopyToArray(float* f) const
 	f[2] = b;
 }
 
-inline CHSB & CHSB::operator=(const CHSB hsb)
-{
-	h = hsb.h;
-	s = hsb.s;
-	b = hsb.b;
-
-	return *this;
-}
-
-inline bool CHSB::operator==(const CHSB hsb) const
+inline bool CHSB::operator==(const CHSB & hsb) const
 {
 	return h == hsb.h
 		&& s == hsb.s
 		&& b == hsb.b;
 }
 
-inline bool CHSB::operator!=(const CHSB hsb) const
+inline bool CHSB::operator!=(const CHSB & hsb) const
 {
 	return h != hsb.h
 		|| s != hsb.s
@@ -332,13 +316,13 @@ inline bool CHSB::operator!=(const CHSB hsb) const
 
 inline CColour CHSB::ToColour() const
 {
-	float hue = h == 1.0f ? 0.0f : h * 6.0f;
-	float f = hue - static_cast<int>(hue);
-	float _r = b * 255.0f;
-	uint8_t r = static_cast<uint8_t>(_r);
-	uint8_t p = static_cast<uint8_t>(_r * (1.0f - s));
-	uint8_t q = static_cast<uint8_t>(_r * (1.0f - s * f));
-	uint8_t t = static_cast<uint8_t>(_r * (1.0f - (s * (1.0f - f))));
+	float	hue = h == 1.0f ? 0.0f : h * 6.0f;
+	float	f = hue - static_cast<int>(hue);
+	float	_r = b * 255.0f;
+	const auto	r = static_cast<uint8_t>(_r),
+				p = static_cast<uint8_t>(_r * (1.0f - s)),
+				q = static_cast<uint8_t>(_r * (1.0f - s * f));
+	const auto	t = static_cast<uint8_t>(_r * (1.0f - (s * (1.0f - f))));
 
 	if (hue < 1.0f)
 		return CColour(r, t, p);
