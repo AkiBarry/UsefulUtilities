@@ -14,16 +14,10 @@ public:
 	CColour(const CColour & col) = default;
 	CColour(CColour && col) = default;
 
-	CColour(uint8_t x, uint8_t y, uint8_t z)
-		: r(x), g(y), b(z), a(255) {}
-
-	CColour(uint8_t x, uint8_t y, uint8_t z, uint8_t w)
+	CColour(uint8_t x, uint8_t y, uint8_t z, uint8_t w = 255)
 		: r(x), g(y), b(z), a(w) {}
 
-	CColour(int32_t x, int32_t y, int32_t z)
-		: CColour(static_cast<uint8_t>(x), static_cast<uint8_t>(y), static_cast<uint8_t>(z), static_cast<uint8_t>(255)) {}
-
-	CColour(int32_t x, int32_t y, int32_t z, int32_t w)
+	CColour(int32_t x, int32_t y, int32_t z, int32_t w = 255)
 		: CColour(static_cast<uint8_t>(x), static_cast<uint8_t>(y), static_cast<uint8_t>(z), static_cast<uint8_t>(w)) {}
 
 	CColour(uint32_t c);
