@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
-#include "Math.hpp"
+#include "Vector.hpp"
+#include "UU.hpp"
 
 namespace UU
 {
@@ -40,7 +41,7 @@ namespace UU
 
 		uint32_t						ToD3DColour() const;
 		CHSB							ToHSB() const;
-		NMath::CVec4f					ToVector() const;
+		CVec4f							ToVector() const;
 
 		uint32_t &						AsRawColour();
 		const uint32_t &				AsRawColour() const;
@@ -187,9 +188,9 @@ namespace UU
 		return temp;
 	}
 
-	inline NMath::CVec4f CColour::ToVector() const
+	inline CVec4f CColour::ToVector() const
 	{
-		return NMath::CVec4f{ r / 255.f, g / 255.f, b / 255.f };
+		return CVec4f{ r / 255.f, g / 255.f, b / 255.f };
 	}
 
 	inline uint32_t & CColour::AsRawColour()

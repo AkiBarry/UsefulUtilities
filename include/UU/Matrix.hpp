@@ -105,7 +105,7 @@ UU::CMatrix<T, rows, columns>& UU::CMatrix<T, rows, columns>::operator=(const CM
 }
 
 template <typename T, size_t rows, size_t columns>
-NMath::CMatrix<T, rows, columns>& NMath::CMatrix<T, rows, columns>::operator+=(const CMatrix& m)
+UU::CMatrix<T, rows, columns>& UU::CMatrix<T, rows, columns>::operator+=(const CMatrix& m)
 {
 	for (int i = 0; i < rows; ++i)
 		for (int j = 0; j < columns; ++j)
@@ -115,7 +115,7 @@ NMath::CMatrix<T, rows, columns>& NMath::CMatrix<T, rows, columns>::operator+=(c
 }
 
 template <typename T, size_t rows, size_t columns>
-NMath::CMatrix<T, rows, columns>& NMath::CMatrix<T, rows, columns>::operator-=(const CMatrix& m)
+UU::CMatrix<T, rows, columns>& UU::CMatrix<T, rows, columns>::operator-=(const CMatrix& m)
 {
 	for (int i = 0; i < rows; ++i)
 		for (int j = 0; j < columns; ++j)
@@ -126,7 +126,7 @@ NMath::CMatrix<T, rows, columns>& NMath::CMatrix<T, rows, columns>::operator-=(c
 
 template<typename T, size_t rows, size_t columns>
 template<class U>
-NMath::CMatrix<T, rows, columns> & NMath::CMatrix<T, rows, columns>::operator*=(const CMatrix<U, columns, columns> & m)
+UU::CMatrix<T, rows, columns> & UU::CMatrix<T, rows, columns>::operator*=(const CMatrix<U, columns, columns> & m)
 {
 	CMatrix<T, rows, columns> temp;
 
@@ -143,7 +143,7 @@ NMath::CMatrix<T, rows, columns> & NMath::CMatrix<T, rows, columns>::operator*=(
 }
 
 template <typename T, size_t rows, size_t columns>
-NMath::CMatrix<T, rows, columns>& NMath::CMatrix<T, rows, columns>::operator*=(const T t)
+UU::CMatrix<T, rows, columns>& UU::CMatrix<T, rows, columns>::operator*=(const T t)
 {
 	for (size_t i = 0; i < rows; ++i)
 		for (size_t j = 0; j < columns; ++j)
@@ -153,7 +153,7 @@ NMath::CMatrix<T, rows, columns>& NMath::CMatrix<T, rows, columns>::operator*=(c
 }
 
 template <typename T, size_t rows, size_t columns>
-NMath::CMatrix<T, rows, columns>& NMath::CMatrix<T, rows, columns>::operator/=(const T t)
+UU::CMatrix<T, rows, columns>& UU::CMatrix<T, rows, columns>::operator/=(const T t)
 {
 	if constexpr(std::is_floating_point<T>::value)
 	{
@@ -174,7 +174,7 @@ NMath::CMatrix<T, rows, columns>& NMath::CMatrix<T, rows, columns>::operator/=(c
 }
 
 template <typename T, size_t rows, size_t columns>
-NMath::CMatrix<T, rows, columns> NMath::CMatrix<T, rows, columns>::operator+(const CMatrix& m) const
+UU::CMatrix<T, rows, columns> UU::CMatrix<T, rows, columns>::operator+(const CMatrix& m) const
 {
 	CMatrix temp;
 
@@ -186,7 +186,7 @@ NMath::CMatrix<T, rows, columns> NMath::CMatrix<T, rows, columns>::operator+(con
 }
 
 template <typename T, size_t rows, size_t columns>
-NMath::CMatrix<T, rows, columns> NMath::CMatrix<T, rows, columns>::operator-(const CMatrix& m) const
+UU::CMatrix<T, rows, columns> UU::CMatrix<T, rows, columns>::operator-(const CMatrix& m) const
 {
 	CMatrix temp;
 
@@ -199,7 +199,7 @@ NMath::CMatrix<T, rows, columns> NMath::CMatrix<T, rows, columns>::operator-(con
 
 template<class T, size_t rows, size_t columns>
 template<class U, size_t columns1>
-NMath::CMatrix<decltype(T() * U()), rows, columns1> & NMath::CMatrix<T, rows, columns>::operator*(const CMatrix<U, columns, columns1> & m)
+UU::CMatrix<decltype(T() * U()), rows, columns1> & UU::CMatrix<T, rows, columns>::operator*(const CMatrix<U, columns, columns1> & m)
 {
 	CMatrix<decltype(T() * U()), rows, columns1> temp;
 
@@ -214,7 +214,7 @@ NMath::CMatrix<decltype(T() * U()), rows, columns1> & NMath::CMatrix<T, rows, co
 }
 
 template <typename T, size_t rows, size_t columns>
-NMath::CMatrix<T, rows, columns> NMath::CMatrix<T, rows, columns>::operator*(T t) const
+UU::CMatrix<T, rows, columns> UU::CMatrix<T, rows, columns>::operator*(T t) const
 {
 	CMatrix temp;
 
@@ -226,7 +226,7 @@ NMath::CMatrix<T, rows, columns> NMath::CMatrix<T, rows, columns>::operator*(T t
 }
 
 template <typename T, size_t rows, size_t columns>
-NMath::CMatrix<T, rows, columns> NMath::CMatrix<T, rows, columns>::operator/(T t) const
+UU::CMatrix<T, rows, columns> UU::CMatrix<T, rows, columns>::operator/(T t) const
 {
 	CMatrix temp;
 
@@ -249,7 +249,7 @@ NMath::CMatrix<T, rows, columns> NMath::CMatrix<T, rows, columns>::operator/(T t
 }
 
 template <typename T, size_t rows, size_t columns>
-bool NMath::CMatrix<T, rows, columns>::operator==(const CMatrix& m) const
+bool UU::CMatrix<T, rows, columns>::operator==(const CMatrix& m) const
 {
 	for (int i = 0; i < rows; ++i)
 		for (int j = 0; j < columns; ++j)
@@ -262,7 +262,7 @@ bool NMath::CMatrix<T, rows, columns>::operator==(const CMatrix& m) const
 }
 
 template <typename T, size_t rows, size_t columns>
-bool NMath::CMatrix<T, rows, columns>::operator!=(const CMatrix& m) const
+bool UU::CMatrix<T, rows, columns>::operator!=(const CMatrix& m) const
 {
 	for (int i = 0; i < rows; ++i)
 		for (int j = 0; j < columns; ++j)
@@ -275,7 +275,7 @@ bool NMath::CMatrix<T, rows, columns>::operator!=(const CMatrix& m) const
 }
 
 template<class T, size_t rows, size_t columns>
-T NMath::CMatrix<T, rows, columns>::Det() const
+T UU::CMatrix<T, rows, columns>::Det() const
 {
 	static_assert(rows == columns);
 
@@ -310,7 +310,7 @@ T NMath::CMatrix<T, rows, columns>::Det() const
 }
 
 template<class T, size_t rows, size_t columns>
-NMath::CMatrix<T, columns, rows> NMath::CMatrix<T, rows, columns>::Transpose() const
+UU::CMatrix<T, columns, rows> UU::CMatrix<T, rows, columns>::Transpose() const
 {
 	CMatrix<T, columns, rows> temp;
 
@@ -322,7 +322,7 @@ NMath::CMatrix<T, columns, rows> NMath::CMatrix<T, rows, columns>::Transpose() c
 }
 
 template<class T, size_t rows, size_t columns>
-void NMath::CMatrix<T, rows, columns>::TransposeInPlace()
+void UU::CMatrix<T, rows, columns>::TransposeInPlace()
 {
 	static_assert(rows == columns);
 
@@ -332,7 +332,7 @@ void NMath::CMatrix<T, rows, columns>::TransposeInPlace()
 }
 
 template <typename T, size_t rows, size_t columns>
-void NMath::CMatrix<T, rows, columns>::Negate()
+void UU::CMatrix<T, rows, columns>::Negate()
 {
 	for (int i = 0; i < rows; ++i)
 		for (int j = 0; j < columns; ++j)
@@ -340,7 +340,7 @@ void NMath::CMatrix<T, rows, columns>::Negate()
 }
 
 template <typename T, size_t rows, size_t columns>
-bool NMath::CMatrix<T, rows, columns>::IsZero() const
+bool UU::CMatrix<T, rows, columns>::IsZero() const
 {
 	for (int i = 0; i < rows; ++i)
 		for (int j = 0; j < columns; ++j)
