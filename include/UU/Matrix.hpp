@@ -1,11 +1,12 @@
 #pragma once
 
 #include "Math.hpp"
+#include "UU.hpp"
 #include <initializer_list>
 #include <algorithm>
 
 template <class T, size_t rows, size_t columns>
-class NMath::CMatrix
+class UU::CMatrix
 {
 public:
 	T data[rows][columns];
@@ -54,7 +55,7 @@ public:
 };
 
 template<typename T, size_t rows, size_t columns>
-constexpr void NMath::CMatrix<T, rows, columns>::Zero()
+constexpr void UU::CMatrix<T, rows, columns>::Zero()
 {
 	for (size_t i = 0; i < rows; ++i)
 		for (size_t j = 0; j < rows; ++j)
@@ -62,7 +63,7 @@ constexpr void NMath::CMatrix<T, rows, columns>::Zero()
 }
 
 template <typename T, size_t rows, size_t columns>
-NMath::CMatrix<T, rows, columns>::CMatrix(std::initializer_list<std::initializer_list<T>> init_list)
+UU::CMatrix<T, rows, columns>::CMatrix(std::initializer_list<std::initializer_list<T>> init_list)
 {
 	static_assert(init_list.size() == rows);
 
@@ -82,19 +83,19 @@ NMath::CMatrix<T, rows, columns>::CMatrix(std::initializer_list<std::initializer
 }
 
 template <typename T, size_t rows, size_t columns>
-T* NMath::CMatrix<T, rows, columns>::operator[](size_t i)
+T* UU::CMatrix<T, rows, columns>::operator[](size_t i)
 {
 	return data[i];
 }
 
 template <typename T, size_t rows, size_t columns>
-const T* NMath::CMatrix<T, rows, columns>::operator[](size_t i) const
+const T* UU::CMatrix<T, rows, columns>::operator[](size_t i) const
 {
 	return data[i];
 }
 
 template <typename T, size_t rows, size_t columns>
-NMath::CMatrix<T, rows, columns>& NMath::CMatrix<T, rows, columns>::operator=(const CMatrix& m)
+UU::CMatrix<T, rows, columns>& UU::CMatrix<T, rows, columns>::operator=(const CMatrix& m)
 {
 	for (int i = 0; i < rows; ++i)
 		for (int j = 0; j < columns; ++j)

@@ -1,11 +1,12 @@
 #pragma once
 #include "Math.hpp"
+#include "UU.hpp"
 #include <initializer_list>
 #include <type_traits>
 #include <ostream>
 
 template <class T, size_t size>
-class NMath::CVector
+class UU::CVector final
 {
 private:
 	T data[size];
@@ -17,10 +18,8 @@ public:
 
 	CVector(std::initializer_list<T> init_list);
 
-	CVector(const CVector& v);
-	CVector(CVector&& v) noexcept : data(std::move(v.data)) {}
-
-	~CVector() = default;
+	CVector(const CVector & v);
+	CVector(CVector && v) noexcept : data(std::move(v.data)) {}
 
 	void							Zero();
 
@@ -76,15 +75,15 @@ public:
 	void							Negate();
 	bool							IsZero(T tolerance = T()) const;
 
-	CVector							Cross(const CVector& v) const;
-	T								Dot(const CVector& v) const;
+	CVector							Cross(const CVector & v) const;
+	T								Dot(const CVector & v) const;
 
-	CVector							Min(const CVector& v) const;
-	CVector							Max(const CVector& v) const;
-	CVector							Clamp(const CVector& min, const CVector& max) const;
+	CVector							Min(const CVector & v) const;
+	CVector							Max(const CVector & v) const;
+	CVector							Clamp(const CVector & min, const CVector & max) const;
 
-	void							Randomize(const CVector& min, const CVector& max);
-	void							Lerp(const CVector& v, T factor);
+	void							Randomize(const CVector & min, const CVector & max);
+	void							Lerp(const CVector & v, T factor);
 
 	CVector							Normalized() const;
 	T								NormalizeInPlace();
@@ -108,7 +107,7 @@ public:
 };
 
 template <class T, size_t size, bool radians = false>
-class NMath::CAngle
+class UU::CAngle final
 {
 private:
 	T data[size];
@@ -184,7 +183,7 @@ public:
 };
 
 template <typename T, size_t size>
-NMath::CVector<T, size>::CVector(std::initializer_list<T> init_list)
+UU::CVector<T, size>::CVector(std::initializer_list<T> init_list)
 {
 	auto it = init_list.begin();
 	for (auto i = 0; it != init_list.end(); ++i, ++it)
@@ -194,7 +193,7 @@ NMath::CVector<T, size>::CVector(std::initializer_list<T> init_list)
 }
 
 template<class T, size_t size>
-NMath::CVector<T, size>::CVector(const CVector & v)
+UU::CVector<T, size>::CVector(const CVector & v)
 {
 	for (size_t i = 0; i < size; ++i)
 	{
@@ -203,7 +202,7 @@ NMath::CVector<T, size>::CVector(const CVector & v)
 }
 
 template<class T, size_t size>
-void NMath::CVector<T, size>::Zero()
+void UU::CVector<T, size>::Zero()
 {
 	for(size_t i = 0; i < size; ++i)
 	{
@@ -212,31 +211,31 @@ void NMath::CVector<T, size>::Zero()
 }
 
 template <typename T, size_t size>
-T& NMath::CVector<T, size>::operator[](size_t i)
+T& UU::CVector<T, size>::operator[](size_t i)
 {
 	return data[i];
 }
 
 template <typename T, size_t size>
-T NMath::CVector<T, size>::operator[](size_t i) const
+T UU::CVector<T, size>::operator[](size_t i) const
 {
 	return data[i];
 }
 
 template <typename T, size_t size>
-T* NMath::CVector<T, size>::Base()
+T* UU::CVector<T, size>::Base()
 {
 	return reinterpret_cast<T*>(this);
 }
 
 template <typename T, size_t size>
-T const * NMath::CVector<T, size>::Base() const
+T const * UU::CVector<T, size>::Base() const
 {
 	return reinterpret_cast<const T*>(this);
 }
 
 template <typename T, size_t size>
-void NMath::CVector<T, size>::CopyToArray(T* t) const
+void UU::CVector<T, size>::CopyToArray(T* t) const
 {
 	for (size_t i = 0; i < size; ++i)
 	{
@@ -245,7 +244,7 @@ void NMath::CVector<T, size>::CopyToArray(T* t) const
 }
 
 template <typename T, size_t size>
-NMath::CVector<T, size>& NMath::CVector<T, size>::operator=(const CVector& v)
+UU::CVector<T, size>& UU::CVector<T, size>::operator=(const CVector& v)
 {
 	for (int i = 0; i < size; ++i)
 		data[i] = v.data[i];
@@ -254,7 +253,7 @@ NMath::CVector<T, size>& NMath::CVector<T, size>::operator=(const CVector& v)
 }
 
 template <typename T, size_t size>
-NMath::CVector<T, size>& NMath::CVector<T, size>::operator+=(const CVector& v)
+UU::CVector<T, size>& UU::CVector<T, size>::operator+=(const CVector& v)
 {
 	for (int i = 0; i < size; ++i)
 		data[i] += v.data[i];
@@ -263,7 +262,7 @@ NMath::CVector<T, size>& NMath::CVector<T, size>::operator+=(const CVector& v)
 }
 
 template <typename T, size_t size>
-NMath::CVector<T, size>& NMath::CVector<T, size>::operator-=(const CVector& v)
+UU::CVector<T, size>& UU::CVector<T, size>::operator-=(const CVector& v)
 {
 	for (int i = 0; i < size; ++i)
 		data[i] -= v.data[i];
@@ -272,7 +271,7 @@ NMath::CVector<T, size>& NMath::CVector<T, size>::operator-=(const CVector& v)
 }
 
 template <typename T, size_t size>
-NMath::CVector<T, size>& NMath::CVector<T, size>::operator*=(T t)
+UU::CVector<T, size>& UU::CVector<T, size>::operator*=(T t)
 {
 	for (int i = 0; i < size; ++i)
 		data[i] *= t;
@@ -281,7 +280,7 @@ NMath::CVector<T, size>& NMath::CVector<T, size>::operator*=(T t)
 }
 
 template <typename T, size_t size>
-NMath::CVector<T, size>& NMath::CVector<T, size>::operator/=(T t)
+UU::CVector<T, size>& UU::CVector<T, size>::operator/=(T t)
 {
 	if constexpr(std::is_floating_point<T>::value)
 	{
@@ -301,7 +300,7 @@ NMath::CVector<T, size>& NMath::CVector<T, size>::operator/=(T t)
 }
 
 template <typename T, size_t size>
-NMath::CVector<T, size> NMath::CVector<T, size>::operator+(const CVector& v) const
+UU::CVector<T, size> UU::CVector<T, size>::operator+(const CVector& v) const
 {
 	CVector<T, size> temp;
 
@@ -312,7 +311,7 @@ NMath::CVector<T, size> NMath::CVector<T, size>::operator+(const CVector& v) con
 }
 
 template <typename T, size_t size>
-NMath::CVector<T, size> NMath::CVector<T, size>::operator-(const CVector& v) const
+UU::CVector<T, size> UU::CVector<T, size>::operator-(const CVector& v) const
 {
 	CVector<T, size> temp;
 
@@ -323,7 +322,7 @@ NMath::CVector<T, size> NMath::CVector<T, size>::operator-(const CVector& v) con
 }
 
 template<class T, size_t size>
-NMath::CVector<T, size> NMath::CVector<T, size>::operator-() const
+UU::CVector<T, size> UU::CVector<T, size>::operator-() const
 {
 	CVector<T, size> temp;
 
@@ -334,7 +333,7 @@ NMath::CVector<T, size> NMath::CVector<T, size>::operator-() const
 }
 
 template <typename T, size_t size>
-NMath::CVector<T, size> NMath::CVector<T, size>::operator*(T t) const
+UU::CVector<T, size> UU::CVector<T, size>::operator*(T t) const
 {
 	CVector<T, size> temp;
 
@@ -345,7 +344,7 @@ NMath::CVector<T, size> NMath::CVector<T, size>::operator*(T t) const
 }
 
 template <typename T, size_t size>
-NMath::CVector<T, size> NMath::CVector<T, size>::operator/(T t) const
+UU::CVector<T, size> UU::CVector<T, size>::operator/(T t) const
 {
 	CVector<T, size> temp;
 
@@ -366,7 +365,7 @@ NMath::CVector<T, size> NMath::CVector<T, size>::operator/(T t) const
 }
 
 template <typename T, size_t size>
-bool NMath::CVector<T, size>::operator==(const CVector& v) const
+bool UU::CVector<T, size>::operator==(const CVector & v) const
 {
 	for (int i = 0; i < size; ++i)
 	{
@@ -378,7 +377,7 @@ bool NMath::CVector<T, size>::operator==(const CVector& v) const
 }
 
 template <typename T, size_t size>
-bool NMath::CVector<T, size>::operator!=(const CVector& v) const
+bool UU::CVector<T, size>::operator!=(const CVector & v) const
 {
 	for (int i = 0; i < size; ++i)
 	{
@@ -390,7 +389,7 @@ bool NMath::CVector<T, size>::operator!=(const CVector& v) const
 }
 
 template <typename T, size_t size>
-T NMath::CVector<T, size>::Length() const
+T UU::CVector<T, size>::Length() const
 {
 	T temp = T();
 
@@ -401,7 +400,7 @@ T NMath::CVector<T, size>::Length() const
 }
 
 template <typename T, size_t size>
-T NMath::CVector<T, size>::LengthSqr() const
+T UU::CVector<T, size>::LengthSqr() const
 {
 	T temp = T();
 
@@ -412,19 +411,19 @@ T NMath::CVector<T, size>::LengthSqr() const
 }
 
 template <typename T, size_t size>
-bool NMath::CVector<T, size>::IsLengthGreaterThan(T val) const
+bool UU::CVector<T, size>::IsLengthGreaterThan(T val) const
 {
 	return LengthSqr() > val * val;
 }
 
 template <typename T, size_t size>
-bool NMath::CVector<T, size>::IsLengthLesserThan(T val) const
+bool UU::CVector<T, size>::IsLengthLesserThan(T val) const
 {
 	return LengthSqr() < val * val;
 }
 
 template <typename T, size_t size>
-T NMath::CVector<T, size>::DistTo(const CVector& v) const
+T UU::CVector<T, size>::DistTo(const CVector& v) const
 {
 	CVector temp = v - *this;
 
@@ -432,7 +431,7 @@ T NMath::CVector<T, size>::DistTo(const CVector& v) const
 }
 
 template <typename T, size_t size>
-T NMath::CVector<T, size>::DistToSqr(const CVector& v) const
+T UU::CVector<T, size>::DistToSqr(const CVector& v) const
 {
 	CVector temp = v - *this;
 
@@ -440,7 +439,7 @@ T NMath::CVector<T, size>::DistToSqr(const CVector& v) const
 }
 
 template <typename T, size_t size>
-bool NMath::CVector<T, size>::WithinAABox(const CVector& min, const CVector& max) const
+bool UU::CVector<T, size>::WithinAABox(const CVector& min, const CVector& max) const
 {
 	for (int i = 0; i < size; ++i)
 	{
@@ -453,7 +452,7 @@ bool NMath::CVector<T, size>::WithinAABox(const CVector& min, const CVector& max
 
 template<class T, size_t size>
 template<class U, bool radians /*= false*/>
-NMath::CAngle<U, size * (size - 1) / 2, radians> NMath::CVector<T, size>::ToCAngle() const
+UU::CAngle<U, size * (size - 1) / 2, radians> UU::CVector<T, size>::ToCAngle() const
 {
 	auto normalized_vec = this->Normalized();
 	CAngle<U, size * (size - 1) / 2, radians> temp;
@@ -483,7 +482,7 @@ NMath::CAngle<U, size * (size - 1) / 2, radians> NMath::CVector<T, size>::ToCAng
 
 template <typename T, size_t size>
 template<size_t N>
-auto NMath::CVector<T, size>::AsCVector() const -> CVector<T, N>
+auto UU::CVector<T, size>::AsCVector() const -> CVector<T, N>
 {
 	static_assert(N <= size);
 
@@ -492,7 +491,7 @@ auto NMath::CVector<T, size>::AsCVector() const -> CVector<T, N>
 
 template <typename T, size_t size>
 template<size_t N>
-auto NMath::CVector<T, size>::AsCVector() -> CVector<T, N>&
+auto UU::CVector<T, size>::AsCVector() -> CVector<T, N>&
 {
 	static_assert(N <= size);
 
@@ -500,7 +499,7 @@ auto NMath::CVector<T, size>::AsCVector() -> CVector<T, N>&
 }
 
 template <typename T, size_t size>
-void NMath::CVector<T, size>::Negate()
+void UU::CVector<T, size>::Negate()
 {
 	if constexpr(!std::is_signed<T>::type)
 		return;
@@ -512,7 +511,7 @@ void NMath::CVector<T, size>::Negate()
 }
 
 template <typename T, size_t size>
-bool NMath::CVector<T, size>::IsZero(T tolerance) const
+bool UU::CVector<T, size>::IsZero(T tolerance) const
 {
 	for (int i = 0; i < size; ++i)
 	{
@@ -524,7 +523,7 @@ bool NMath::CVector<T, size>::IsZero(T tolerance) const
 }
 
 template <typename T, size_t size>
-NMath::CVector<T, size> NMath::CVector<T, size>::Cross(const CVector& v) const
+UU::CVector<T, size> UU::CVector<T, size>::Cross(const CVector& v) const
 {
 	static_assert(size == 3);
 
@@ -538,7 +537,7 @@ NMath::CVector<T, size> NMath::CVector<T, size>::Cross(const CVector& v) const
 }
 
 template <typename T, size_t size>
-T NMath::CVector<T, size>::Dot(const CVector& v) const
+T UU::CVector<T, size>::Dot(const CVector& v) const
 {
 	T temp = T();
 
@@ -549,7 +548,7 @@ T NMath::CVector<T, size>::Dot(const CVector& v) const
 }
 
 template <typename T, size_t size>
-NMath::CVector<T, size> NMath::CVector<T, size>::Min(const CVector& v) const
+UU::CVector<T, size> UU::CVector<T, size>::Min(const CVector& v) const
 {
 	CVector temp;
 
@@ -560,7 +559,7 @@ NMath::CVector<T, size> NMath::CVector<T, size>::Min(const CVector& v) const
 }
 
 template <typename T, size_t size>
-NMath::CVector<T, size> NMath::CVector<T, size>::Max(const CVector& v) const
+UU::CVector<T, size> UU::CVector<T, size>::Max(const CVector& v) const
 {
 	CVector temp;
 
@@ -571,7 +570,7 @@ NMath::CVector<T, size> NMath::CVector<T, size>::Max(const CVector& v) const
 }
 
 template <typename T, size_t size>
-NMath::CVector<T, size> NMath::CVector<T, size>::Clamp(const CVector& min, const CVector& max) const
+UU::CVector<T, size> UU::CVector<T, size>::Clamp(const CVector& min, const CVector& max) const
 {
 	CVector temp;
 
@@ -582,21 +581,21 @@ NMath::CVector<T, size> NMath::CVector<T, size>::Clamp(const CVector& min, const
 }
 
 template <typename T, size_t size>
-void NMath::CVector<T, size>::Randomize(const CVector& min, const CVector& max)
+void UU::CVector<T, size>::Randomize(const CVector& min, const CVector& max)
 {
 	for (int i = 0; i < size; ++i)
 		data[i] = NMath::CRandom<T>();
 }
 
 template <typename T, size_t size>
-void NMath::CVector<T, size>::Lerp(const CVector& v, T factor)
+void UU::CVector<T, size>::Lerp(const CVector& v, T factor)
 {
 	for (int i = 0; i < size; ++i)
 		data[i] = NMath::Lerp(data[i], v.data[i], factor);
 }
 
 template <typename T, size_t size>
-NMath::CVector<T, size> NMath::CVector<T, size>::Normalized() const
+UU::CVector<T, size> UU::CVector<T, size>::Normalized() const
 {
 	CVector temp = *this;
 
@@ -608,7 +607,7 @@ NMath::CVector<T, size> NMath::CVector<T, size>::Normalized() const
 }
 
 template <typename T, size_t size>
-T NMath::CVector<T, size>::NormalizeInPlace()
+T UU::CVector<T, size>::NormalizeInPlace()
 {
 	T len = Length();
 
@@ -618,7 +617,7 @@ T NMath::CVector<T, size>::NormalizeInPlace()
 }
 
 template<class T, size_t size, bool radians>
-NMath::CAngle<T, size, radians>::CAngle(std::initializer_list<T> init_list)
+UU::CAngle<T, size, radians>::CAngle(std::initializer_list<T> init_list)
 {
 	auto it = init_list.begin();
 
@@ -629,31 +628,31 @@ NMath::CAngle<T, size, radians>::CAngle(std::initializer_list<T> init_list)
 }
 
 template<class T, size_t size, bool radians>
-T & NMath::CAngle<T, size, radians>::operator[](size_t i)
+T & UU::CAngle<T, size, radians>::operator[](size_t i)
 {
 	return data[i];
 }
 
 template<class T, size_t size, bool radians>
-T NMath::CAngle<T, size, radians>::operator[](size_t i) const
+T UU::CAngle<T, size, radians>::operator[](size_t i) const
 {
 	return data[i];
 }
 
 template<class T, size_t size, bool radians>
-T * NMath::CAngle<T, size, radians>::Base()
+T * UU::CAngle<T, size, radians>::Base()
 {
 	return reinterpret_cast<T*>(this);
 }
 
 template<class T, size_t size, bool radians>
-T const * NMath::CAngle<T, size, radians>::Base() const
+T const * UU::CAngle<T, size, radians>::Base() const
 {
 	return reinterpret_cast<const T*>(this);
 }
 
 template<class T, size_t size, bool radians>
-void NMath::CAngle<T, size, radians>::CopyToArray(T * t) const
+void UU::CAngle<T, size, radians>::CopyToArray(T * t) const
 {
 	for (size_t i = 0; i < size; ++i)
 	{
@@ -662,7 +661,7 @@ void NMath::CAngle<T, size, radians>::CopyToArray(T * t) const
 }
 
 template<class T, size_t size, bool radians>
-NMath::CAngle<T, size, radians> & NMath::CAngle<T, size, radians>::operator=(const CAngle & a)
+UU::CAngle<T, size, radians> & UU::CAngle<T, size, radians>::operator=(const CAngle & a)
 {
 	for (int i = 0; i < size; ++i)
 		data[i] = a.data[i];
@@ -671,7 +670,7 @@ NMath::CAngle<T, size, radians> & NMath::CAngle<T, size, radians>::operator=(con
 }
 
 template<class T, size_t size, bool radians>
-NMath::CAngle<T, size, radians> & NMath::CAngle<T, size, radians>::operator+=(const CAngle & a)
+UU::CAngle<T, size, radians> & UU::CAngle<T, size, radians>::operator+=(const CAngle & a)
 {
 	for (int i = 0; i < size; ++i)
 		data[i] += a.data[i];
@@ -680,7 +679,7 @@ NMath::CAngle<T, size, radians> & NMath::CAngle<T, size, radians>::operator+=(co
 }
 
 template<class T, size_t size, bool radians>
-NMath::CAngle<T, size, radians> & NMath::CAngle<T, size, radians>::operator-=(const CAngle & a)
+UU::CAngle<T, size, radians> & UU::CAngle<T, size, radians>::operator-=(const CAngle & a)
 {
 	for (int i = 0; i < size; ++i)
 		data[i] -= a.data[i];
@@ -689,7 +688,7 @@ NMath::CAngle<T, size, radians> & NMath::CAngle<T, size, radians>::operator-=(co
 }
 
 template<class T, size_t size, bool radians>
-NMath::CAngle<T, size, radians> & NMath::CAngle<T, size, radians>::operator*=(T t)
+UU::CAngle<T, size, radians> & UU::CAngle<T, size, radians>::operator*=(T t)
 {
 	for (int i = 0; i < size; ++i)
 		data[i] *= t;
@@ -698,7 +697,7 @@ NMath::CAngle<T, size, radians> & NMath::CAngle<T, size, radians>::operator*=(T 
 }
 
 template<class T, size_t size, bool radians>
-NMath::CAngle<T, size, radians> & NMath::CAngle<T, size, radians>::operator/=(T t)
+UU::CAngle<T, size, radians> & UU::CAngle<T, size, radians>::operator/=(T t)
 {
 	for (int i = 0; i < size; ++i)
 		data[i] /= t;
@@ -707,7 +706,7 @@ NMath::CAngle<T, size, radians> & NMath::CAngle<T, size, radians>::operator/=(T 
 }
 
 template<class T, size_t size, bool radians>
-NMath::CAngle<T, size, radians> NMath::CAngle<T, size, radians>::operator+(const CAngle & a) const
+UU::CAngle<T, size, radians> UU::CAngle<T, size, radians>::operator+(const CAngle & a) const
 {
 	NMath::CAngle<T, size, radians> temp;
 
@@ -718,7 +717,7 @@ NMath::CAngle<T, size, radians> NMath::CAngle<T, size, radians>::operator+(const
 }
 
 template<class T, size_t size, bool radians>
-NMath::CAngle<T, size, radians> NMath::CAngle<T, size, radians>::operator-(const CAngle & a) const
+UU::CAngle<T, size, radians> UU::CAngle<T, size, radians>::operator-(const CAngle & a) const
 {
 	NMath::CAngle<T, size, radians> temp;
 
@@ -729,7 +728,7 @@ NMath::CAngle<T, size, radians> NMath::CAngle<T, size, radians>::operator-(const
 }
 
 template<class T, size_t size, bool radians>
-NMath::CAngle<T, size, radians> NMath::CAngle<T, size, radians>::operator*(T t) const
+UU::CAngle<T, size, radians> UU::CAngle<T, size, radians>::operator*(T t) const
 {
 	CAngle<T, size, radians> temp;
 
@@ -740,7 +739,7 @@ NMath::CAngle<T, size, radians> NMath::CAngle<T, size, radians>::operator*(T t) 
 }
 
 template<class T, size_t size, bool radians>
-NMath::CAngle<T, size, radians> NMath::CAngle<T, size, radians>::operator/(T t) const
+UU::CAngle<T, size, radians> UU::CAngle<T, size, radians>::operator/(T t) const
 {
 	NMath::CAngle<T, size, radians> temp;
 
@@ -751,7 +750,7 @@ NMath::CAngle<T, size, radians> NMath::CAngle<T, size, radians>::operator/(T t) 
 }
 
 template<class T, size_t size, bool radians>
-bool NMath::CAngle<T, size, radians>::operator==(const CAngle & a) const
+bool UU::CAngle<T, size, radians>::operator==(const CAngle & a) const
 {
 	for (int i = 0; i < size; ++i)
 	{
@@ -763,7 +762,7 @@ bool NMath::CAngle<T, size, radians>::operator==(const CAngle & a) const
 }
 
 template<class T, size_t size, bool radians>
-bool NMath::CAngle<T, size, radians>::operator!=(const CAngle & a) const
+bool UU::CAngle<T, size, radians>::operator!=(const CAngle & a) const
 {
 	for (int i = 0; i < size; ++i)
 	{
@@ -775,7 +774,7 @@ bool NMath::CAngle<T, size, radians>::operator!=(const CAngle & a) const
 }
 
 template<class T, size_t size, bool radians>
-T NMath::CAngle<T, size, radians>::Length() const
+T UU::CAngle<T, size, radians>::Length() const
 {
 	T temp = T();
 
@@ -786,7 +785,7 @@ T NMath::CAngle<T, size, radians>::Length() const
 }
 
 template<class T, size_t size, bool radians>
-T NMath::CAngle<T, size, radians>::LengthSqr() const
+T UU::CAngle<T, size, radians>::LengthSqr() const
 {
 	T temp = T();
 
@@ -797,13 +796,13 @@ T NMath::CAngle<T, size, radians>::LengthSqr() const
 }
 
 template<class T, size_t size, bool radians>
-NMath::CVector<T, size> NMath::CAngle<T, size, radians>::ToCVector() const
+UU::CVector<T, size> UU::CAngle<T, size, radians>::ToCVector() const
 {
 	return Forward();
 }
 
 template<class T, size_t size, bool radians>
-NMath::CVector<T, size> NMath::CAngle<T, size, radians>::Forward() const
+UU::CVector<T, size> UU::CAngle<T, size, radians>::Forward() const
 {
 	CVector<T, size> temp;
 
@@ -833,7 +832,7 @@ NMath::CVector<T, size> NMath::CAngle<T, size, radians>::Forward() const
 }
 
 template<class T, size_t size, bool radians>
-NMath::CVector<T, size> NMath::CAngle<T, size, radians>::Right() const
+UU::CVector<T, size> UU::CAngle<T, size, radians>::Right() const
 {
 	CVector<T, size> temp;
 
@@ -854,7 +853,7 @@ NMath::CVector<T, size> NMath::CAngle<T, size, radians>::Right() const
 }
 
 template<class T, size_t size, bool radians>
-NMath::CVector<T, size> NMath::CAngle<T, size, radians>::Up() const
+UU::CVector<T, size> UU::CAngle<T, size, radians>::Up() const
 {
 
 	CVector<T, size> temp;
@@ -876,14 +875,14 @@ NMath::CVector<T, size> NMath::CAngle<T, size, radians>::Up() const
 }
 
 template<class T, size_t size, bool radians>
-void NMath::CAngle<T, size, radians>::Negate()
+void UU::CAngle<T, size, radians>::Negate()
 {
 	for (int i = 0; i < size; ++i)
 		data[i] = -data[i];
 }
 
 template<class T, size_t size, bool radians>
-bool NMath::CAngle<T, size, radians>::IsValid() const
+bool UU::CAngle<T, size, radians>::IsValid() const
 {
 	if constexpr (!std::is_floating_point<T>::value)
 		return true;
@@ -898,7 +897,7 @@ bool NMath::CAngle<T, size, radians>::IsValid() const
 }
 
 template<class T, size_t size, bool radians>
-NMath::CAngle<T, size, radians> NMath::CAngle<T, size, radians>::Min(const CAngle & a) const
+UU::CAngle<T, size, radians> UU::CAngle<T, size, radians>::Min(const CAngle & a) const
 {
 	CAngle<T, size, radians> temp;
 
@@ -909,7 +908,7 @@ NMath::CAngle<T, size, radians> NMath::CAngle<T, size, radians>::Min(const CAngl
 }
 
 template<class T, size_t size, bool radians>
-NMath::CAngle<T, size, radians> NMath::CAngle<T, size, radians>::Max(const CAngle & a) const
+UU::CAngle<T, size, radians> UU::CAngle<T, size, radians>::Max(const CAngle & a) const
 {
 	CAngle<T, size, radians> temp;
 
@@ -920,7 +919,7 @@ NMath::CAngle<T, size, radians> NMath::CAngle<T, size, radians>::Max(const CAngl
 }
 
 template<class T, size_t size, bool radians>
-NMath::CAngle<T, size, radians> NMath::CAngle<T, size, radians>::Clamp(const CAngle & min, const CAngle & max) const
+UU::CAngle<T, size, radians> UU::CAngle<T, size, radians>::Clamp(const CAngle & min, const CAngle & max) const
 {
 	CAngle<T, size, radians> temp;
 
@@ -931,13 +930,13 @@ NMath::CAngle<T, size, radians> NMath::CAngle<T, size, radians>::Clamp(const CAn
 }
 
 template<class T, size_t size, bool radians>
-void NMath::CAngle<T, size, radians>::Randomize(const CAngle & min, const CAngle & max)
+void UU::CAngle<T, size, radians>::Randomize(const CAngle & min, const CAngle & max)
 {
 	
 }
 
 template<class T, size_t size, bool radians>
-void NMath::CAngle<T, size, radians>::Lerp(const CAngle & a, T factor)
+void UU::CAngle<T, size, radians>::Lerp(const CAngle & a, T factor)
 {
 	for (size_t i = 0; i < size; ++i)
 		data[i] = NMath::Lerp(data[i], a.data[i], factor);
@@ -946,7 +945,7 @@ void NMath::CAngle<T, size, radians>::Lerp(const CAngle & a, T factor)
 }
 
 template<class T, size_t size, bool radians>
-NMath::CAngle<T, size, radians> NMath::CAngle<T, size, radians>::Normalized() const
+UU::CAngle<T, size, radians> UU::CAngle<T, size, radians>::Normalized() const
 {
 	CAngle<T, size, radians> temp;
 
@@ -957,7 +956,7 @@ NMath::CAngle<T, size, radians> NMath::CAngle<T, size, radians>::Normalized() co
 }
 
 template<class T, size_t size, bool radians>
-void NMath::CAngle<T, size, radians>::NormalizeInPlace()
+void UU::CAngle<T, size, radians>::NormalizeInPlace()
 {
 	for (size_t i = 0; i < size; ++i)
 		data[i] = NormalizeAngle(data[i]);
