@@ -1,7 +1,7 @@
 #pragma once
 #include <cmath>
 
-namespace UU::Math
+namespace UU::NMath
 {
 	constexpr float		FLT_PI =		3.141592653f;
 	constexpr float		FLT_INV_PI =	1.f / FLT_PI;
@@ -108,7 +108,7 @@ namespace UU::Math
 }
 
 template <class T>
-T UU::Math::Sign(const T t)
+T UU::NMath::Sign(const T t)
 {
 	if (!t)
 	{
@@ -118,289 +118,289 @@ T UU::Math::Sign(const T t)
 }
 
 template <class T>
-T UU::Math::Abs(const T val)
+T UU::NMath::Abs(const T val)
 {
 	return val < 0 ? -val : val;
 }
 
 template <class T>
-T UU::Math::Min(const T a, const T b)
+T UU::NMath::Min(const T a, const T b)
 {
 	return a < b ? a : b;
 }
 
 template <class T>
-T UU::Math::Max(const T a, const T b)
+T UU::NMath::Max(const T a, const T b)
 {
 	return a > b ? a : b;
 }
 
 template <class T>
-T UU::Math::Clamp(const T x, const T min, const T max)
+T UU::NMath::Clamp(const T x, const T min, const T max)
 {
 	return x > max ? max : x < min ? min : x;
 }
 
 template<typename T>
-T UU::Math::Lerp(T min, T max, T factor)
+T UU::NMath::Lerp(T min, T max, T factor)
 {
 	return min + (max - min) * factor;
 }
 
 template<class T>
-T UU::Math::NormalizeAngle(T angle)
+T UU::NMath::NormalizeAngle(T angle)
 {
 	return fmod(angle + T(180), T(360)) - T(180);
 }
 
-float UU::Math::Mod(const float a, const float b)
+float UU::NMath::Mod(const float a, const float b)
 {
 	return fmodf(a, b);
 }
 
-double UU::Math::Mod(const double a, const double b)
+double UU::NMath::Mod(const double a, const double b)
 {
 	return fmod(a, b);
 }
 
-float UU::Math::Sin(const float val)
+float UU::NMath::Sin(const float val)
 {
 	return sinf(val);
 }
 
-float UU::Math::Cos(const float val)
+float UU::NMath::Cos(const float val)
 {
 	return cosf(val);
 }
 
-float UU::Math::Tan(const float val)
+float UU::NMath::Tan(const float val)
 {
 	return tanf(val);
 }
 
-void UU::Math::SinCos(float val, float & sin_val, float & cos_val)
+void UU::NMath::SinCos(float val, float & sin_val, float & cos_val)
 {
 	sin_val = Sin(val);
 	cos_val = Cos(val);
 }
 
-double UU::Math::Sin(const double val)
+double UU::NMath::Sin(const double val)
 {
 	return sin(val);
 }
 
-double UU::Math::Cos(const double val)
+double UU::NMath::Cos(const double val)
 {
 	return cos(val);
 }
 
-double UU::Math::Tan(const double val)
+double UU::NMath::Tan(const double val)
 {
 	return tan(val);
 }
 
-void UU::Math::SinCos(double val, double & sin_val, double & cos_val)
+void UU::NMath::SinCos(double val, double & sin_val, double & cos_val)
 {
 	sin_val = Sin(val);
 	cos_val = Cos(val);
 }
 
-float UU::Math::ASin(const float val)
+float UU::NMath::ASin(const float val)
 {
 	return asinf(val);
 }
 
-float UU::Math::ACos(const float val)
+float UU::NMath::ACos(const float val)
 {
 	return acosf(val);
 }
 
-float UU::Math::ATan(const float val)
+float UU::NMath::ATan(const float val)
 {
 	return atanf(val);
 }
 
-float UU::Math::ATan2(const float y, const float x)
+float UU::NMath::ATan2(const float y, const float x)
 {
 	return atan2f(y, x);
 }
 
-double UU::Math::ASin(const double val)
+double UU::NMath::ASin(const double val)
 {
 	return asin(val);
 }
 
-double UU::Math::ACos(const double val)
+double UU::NMath::ACos(const double val)
 {
 	return acos(val);
 }
 
-double UU::Math::ATan(const double val)
+double UU::NMath::ATan(const double val)
 {
 	return atan(val);
 }
 
-double UU::Math::ATan2(const double y, const double x)
+double UU::NMath::ATan2(const double y, const double x)
 {
 	return atan2(y, x);
 }
 
-float UU::Math::Sqrt(const float val)
+float UU::NMath::Sqrt(const float val)
 {
 	return sqrtf(val);
 }
 
-float UU::Math::InvSqrt(const float val)
+float UU::NMath::InvSqrt(const float val)
 {
 	return 1.f / sqrtf(val);
 }
 
-double UU::Math::Sqrt(const double val)
+double UU::NMath::Sqrt(const double val)
 {
 	return sqrt(val);
 }
 
-double UU::Math::InvSqrt(const double val)
+double UU::NMath::InvSqrt(const double val)
 {
 	return 1.0 / sqrt(val);
 }
 
-float UU::Math::Exp(const float val)
+float UU::NMath::Exp(const float val)
 {
 	return expf(val);
 }
 
-float UU::Math::Ln(const float val)
+float UU::NMath::Ln(const float val)
 {
 	return logf(val);
 }
 
-float UU::Math::Pow(const float a, const float b)
+float UU::NMath::Pow(const float a, const float b)
 {
 	return powf(a, b);
 }
 
-double UU::Math::Exp(const double val)
+double UU::NMath::Exp(const double val)
 {
 	return exp(val);
 }
 
-double UU::Math::Ln(const double val)
+double UU::NMath::Ln(const double val)
 {
 	return log(val);
 }
 
-double UU::Math::Pow(const double a, const double b)
+double UU::NMath::Pow(const double a, const double b)
 {
 	return pow(a, b);
 }
 
-float UU::Math::Floor(const float val)
+float UU::NMath::Floor(const float val)
 {
 	return floorf(val);
 }
 
-float UU::Math::Ceil(const float val)
+float UU::NMath::Ceil(const float val)
 {
 	return ceilf(val);
 }
 
-float UU::Math::Trunc(const float val)
+float UU::NMath::Trunc(const float val)
 {
 	return truncf(val);
 }
 
-float UU::Math::Round(const float val)
+float UU::NMath::Round(const float val)
 {
 	return roundf(val);
 }
 
-double UU::Math::Floor(const double val)
+double UU::NMath::Floor(const double val)
 {
 	return floor(val);
 }
 
-double UU::Math::Ceil(const double val)
+double UU::NMath::Ceil(const double val)
 {
 	return ceil(val);
 }
 
-double UU::Math::Trunc(const double val)
+double UU::NMath::Trunc(const double val)
 {
 	return trunc(val);
 }
 
-double UU::Math::Round(const double val)
+double UU::NMath::Round(const double val)
 {
 	return round(val);
 }
 
-bool UU::Math::IsNormal(const float val)
+bool UU::NMath::IsNormal(const float val)
 {
 	return isnormal(val);
 }
 
-bool UU::Math::IsFinite(const float val)
+bool UU::NMath::IsFinite(const float val)
 {
 	return isfinite(val);
 }
 
-bool UU::Math::IsNan(const float val)
+bool UU::NMath::IsNan(const float val)
 {
 	return isnan(val);
 }
 
-bool UU::Math::IsInf(const float val)
+bool UU::NMath::IsInf(const float val)
 {
 	return isinf(val);
 }
 
-bool UU::Math::IsNormal(const double val)
+bool UU::NMath::IsNormal(const double val)
 {
 	return isnormal(val);
 }
 
-bool UU::Math::IsFinite(const double val)
+bool UU::NMath::IsFinite(const double val)
 {
 	return isfinite(val);
 }
 
-bool UU::Math::IsNan(const double val)
+bool UU::NMath::IsNan(const double val)
 {
 	return isnan(val);
 }
 
-bool UU::Math::IsInf(const double val)
+bool UU::NMath::IsInf(const double val)
 {
 	return isinf(val);
 }
 
-float UU::Math::Hypot(const float x, const float y)
+float UU::NMath::Hypot(const float x, const float y)
 {
 	return hypotf(x, y);
 }
 
-double UU::Math::Hypot(const double x, const double y)
+double UU::NMath::Hypot(const double x, const double y)
 {
 	return hypot(x, y);
 }
 
-float UU::Math::RadToDeg(float angle)
+float UU::NMath::RadToDeg(float angle)
 {
 	return angle * 180.f / FLT_PI;
 }
 
-float UU::Math::DegToRad(float angle)
+float UU::NMath::DegToRad(float angle)
 {
 	return angle * FLT_PI / 180.f;
 }
 
-double UU::Math::RadToDeg(double angle)
+double UU::NMath::RadToDeg(double angle)
 {
 	return angle * 180.0 / DBL_PI;
 }
 
-double UU::Math::DegToRad(double angle)
+double UU::NMath::DegToRad(double angle)
 {
 	return angle * DBL_PI / 180.0;
 }

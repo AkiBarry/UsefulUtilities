@@ -1,5 +1,6 @@
 #pragma once
 #include "UU.hpp"
+#include "Math.hpp"
 #include <initializer_list>
 #include <type_traits>
 #include <ostream>
@@ -12,13 +13,16 @@ private:
 public:
 	CVector() {}
 
+	CVector(const CVector & v);
+	CVector(CVector && v) noexcept : data(std::move(v.data)) {}
+	~CVector() = default;
+
 	template<typename... Args>
 	CVector(Args... args) : CVector({ static_cast<T>(args)... }) {}
 
 	CVector(std::initializer_list<T> init_list);
 
-	CVector(const CVector & v);
-	CVector(CVector && v) noexcept : data(std::move(v.data)) {}
+
 
 	void							Zero();
 
@@ -31,7 +35,7 @@ public:
 	void							CopyToArray(T * t) const;
 
 	CVector &						operator=(const CVector & v);
-	CVector &						operator=(CVector && v) noexcept = default;
+	CVector &						operator=(CVector && v) = default;
 
 	CVector &						operator+=(const CVector & v);
 	CVector &						operator-=(const CVector & v);
@@ -105,7 +109,7 @@ public:
 	friend class CAngle;
 };
 
-template <class T, size_t size, bool radians = false>
+template <class T, size_t size, bool radians /*= false*/>
 class UU::CAngle final
 {
 private:
@@ -175,10 +179,10 @@ public:
 		os << a.data[size - 1] << ")";
 
 		return os;
-	};
+	}
 
 	template<typename U, size_t size1>
-	friend class NMath::CVector;
+	friend class CVector;
 };
 
 template <typename T, size_t size>
@@ -458,7 +462,7 @@ UU::CAngle<U, size * (size - 1) / 2, radians> UU::CVector<T, size>::ToCAngle() c
 
 	if constexpr (size == 1)
 	{
-		temp = CAngle<U, size * (size - 1) / 2, radians>(U(normalized_vec.data[0] >= T() ? U() : U(DBL_PI / 2)));
+		temp = CAngle<U, size * (size - 1) / 2, radians>(U(normalized_vec.data[0] >= T() ? U() : U(Math::DBL_PI / 2)));
 	}
 	else if constexpr (size == 2)
 	{
@@ -474,7 +478,7 @@ UU::CAngle<U, size * (size - 1) / 2, radians> UU::CVector<T, size>::ToCAngle() c
 	}
 
 	if constexpr (!radians)
-		return temp * U(DBL_RAD2DEG);
+		return temp * U(UU::NMath::DBL_RAD2DEG);
 
 	return temp;
 }
@@ -707,7 +711,7 @@ UU::CAngle<T, size, radians> & UU::CAngle<T, size, radians>::operator/=(T t)
 template<class T, size_t size, bool radians>
 UU::CAngle<T, size, radians> UU::CAngle<T, size, radians>::operator+(const CAngle & a) const
 {
-	NMath::CAngle<T, size, radians> temp;
+	CAngle<T, size, radians> temp;
 
 	for (int i = 0; i < size; ++i)
 		temp.data[i] = data[i] + a.data[i];
@@ -718,7 +722,7 @@ UU::CAngle<T, size, radians> UU::CAngle<T, size, radians>::operator+(const CAngl
 template<class T, size_t size, bool radians>
 UU::CAngle<T, size, radians> UU::CAngle<T, size, radians>::operator-(const CAngle & a) const
 {
-	NMath::CAngle<T, size, radians> temp;
+	CAngle<T, size, radians> temp;
 
 	for (int i = 0; i < size; ++i)
 		temp.data[i] = data[i] - a.data[i];
@@ -740,7 +744,7 @@ UU::CAngle<T, size, radians> UU::CAngle<T, size, radians>::operator*(T t) const
 template<class T, size_t size, bool radians>
 UU::CAngle<T, size, radians> UU::CAngle<T, size, radians>::operator/(T t) const
 {
-	NMath::CAngle<T, size, radians> temp;
+	CAngle<T, size, radians> temp;
 
 	for (int i = 0; i < size; ++i)
 		temp.data[i] = data[i] / t;

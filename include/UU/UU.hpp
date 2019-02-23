@@ -8,7 +8,7 @@ namespace UU
 	template <typename T, size_t dim>
 	class CVector;
 
-	template <typename T, size_t dim, bool radian = true>
+	template <typename T, size_t dim, bool radian = false>
 	class CAngle;
 
 	template <typename T, size_t rows, size_t columns>
