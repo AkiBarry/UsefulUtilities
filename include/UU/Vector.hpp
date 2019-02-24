@@ -22,8 +22,6 @@ public:
 
 	CVector(std::initializer_list<T> init_list);
 
-
-
 	void							Zero();
 
 	T &								operator[](size_t i);
@@ -67,7 +65,7 @@ public:
 
 	template<class U, bool radians = false>
 	CAngle<U, size * (size - 1) / 2, radians>		ToCAngle() const;
-	//CColour						ToColour() const;
+	CColour							ToColour() const;
 
 	template<size_t N>
 	CVector<T, N>					AsCVector() const;
@@ -184,6 +182,8 @@ public:
 	template<typename U, size_t size1>
 	friend class CVector;
 };
+
+#include "Colour.hpp"
 
 template <typename T, size_t size>
 UU::CVector<T, size>::CVector(std::initializer_list<T> init_list)
@@ -478,6 +478,35 @@ UU::CAngle<U, size * (size - 1) / 2, radians> UU::CVector<T, size>::ToCAngle() c
 		return temp * U(UU::NMath::DBL_RAD2DEG);
 
 	return temp;
+}
+
+template<class T, size_t size>
+UU::CColour UU::CVector<T, size>::ToColour() const
+{
+	static_assert(size == 3 || size == 4);
+
+	if constexpr (size == 3)
+	{
+		if constexpr (std::is_floating_point<T>::value)
+		{
+			return CColour(data[0] / T(255), data[1] / T(255), data[2] / T(255));
+		}
+		else
+		{
+			return CColour(data[0], data[1], data[2]);
+		}
+	}
+	else if constexpr (size == 4)
+	{
+		if constexpr (std::is_floating_point<T>::value)
+		{
+			return CColour(data[0] / T(255), data[1] / T(255), data[2] / T(255), data[3] / T(255));
+		}
+		else
+		{
+			return CColour(data[0], data[1], data[2], data[3]);
+		}
+	}
 }
 
 template <typename T, size_t size>
@@ -946,7 +975,7 @@ UU::CAngle<T, size, radians> UU::CAngle<T, size, radians>::Normalized() const
 	CAngle<T, size, radians> temp;
 
 	for (size_t i = 0; i < size; ++i)
-		temp.data[i] = NormalizeAngle(data[i]);
+		temp.data[i] = NMath::NormalizeAngle(data[i]);
 
 	return temp;
 }
@@ -955,7 +984,7 @@ template<class T, size_t size, bool radians>
 void UU::CAngle<T, size, radians>::NormalizeInPlace()
 {
 	for (size_t i = 0; i < size; ++i)
-		data[i] = NormalizeAngle(data[i]);
+		data[i] = NMath::NormalizeAngle(data[i]);
 }
 
 
