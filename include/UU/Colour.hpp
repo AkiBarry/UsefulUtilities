@@ -190,7 +190,7 @@ inline UU::CHSB UU::CColour::ToHSB() const
 
 inline UU::CVec4f UU::CColour::ToVector() const
 {
-	return CVec4f{ r / 255.f, g / 255.f, b / 255.f };
+	return CVec4f{ r / 255.f, g / 255.f, b / 255.f, a / 255.f };
 }
 
 inline uint32_t & UU::CColour::AsRawColour()
