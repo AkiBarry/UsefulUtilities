@@ -305,10 +305,9 @@ UU::CVector<T, size>& UU::CVector<T, size>::operator/=(T t)
 template <typename T, size_t size>
 UU::CVector<T, size> UU::CVector<T, size>::operator+(const CVector& v) const
 {
-	CVector<T, size> temp;
+	CVector<T, size> temp(*this);
 
-	for (size_t i = 0; i < size; ++i)
-		temp.data[i] = data[i] + v.data[i];
+	temp += v;
 
 	return temp;
 }
@@ -316,10 +315,9 @@ UU::CVector<T, size> UU::CVector<T, size>::operator+(const CVector& v) const
 template <typename T, size_t size>
 UU::CVector<T, size> UU::CVector<T, size>::operator-(const CVector& v) const
 {
-	CVector<T, size> temp;
+	CVector<T, size> temp(*this);
 
-	for (int i = 0; i < size; ++i)
-		temp.data[i] = data[i] - v.data[i];
+	temp -= v;
 
 	return temp;
 }
@@ -338,10 +336,9 @@ UU::CVector<T, size> UU::CVector<T, size>::operator-() const
 template <typename T, size_t size>
 UU::CVector<T, size> UU::CVector<T, size>::operator*(T t) const
 {
-	CVector<T, size> temp;
+	CVector<T, size> temp(*this);
 
-	for (int i = 0; i < size; ++i)
-		temp.data[i] = data[i] * t;
+	temp *= t;
 
 	return temp;
 }
@@ -462,7 +459,7 @@ UU::CAngle<U, size * (size - 1) / 2, radians> UU::CVector<T, size>::ToCAngle() c
 
 	if constexpr (size == 1)
 	{
-		temp = CAngle<U, size * (size - 1) / 2, radians>(U(normalized_vec.data[0] >= T() ? U() : U(Math::DBL_PI / 2)));
+		temp = CAngle<U, size * (size - 1) / 2, radians>(U(normalized_vec.data[0] >= T() ? U() : U(NMath::DBL_PI / 2)));
 	}
 	else if constexpr (size == 2)
 	{
@@ -711,10 +708,9 @@ UU::CAngle<T, size, radians> & UU::CAngle<T, size, radians>::operator/=(T t)
 template<class T, size_t size, bool radians>
 UU::CAngle<T, size, radians> UU::CAngle<T, size, radians>::operator+(const CAngle & a) const
 {
-	CAngle<T, size, radians> temp;
+	CAngle<T, size, radians> temp(*this);
 
-	for (int i = 0; i < size; ++i)
-		temp.data[i] = data[i] + a.data[i];
+	temp += a;
 
 	return *this;
 }
@@ -722,10 +718,9 @@ UU::CAngle<T, size, radians> UU::CAngle<T, size, radians>::operator+(const CAngl
 template<class T, size_t size, bool radians>
 UU::CAngle<T, size, radians> UU::CAngle<T, size, radians>::operator-(const CAngle & a) const
 {
-	CAngle<T, size, radians> temp;
+	CAngle<T, size, radians> temp(*this);
 
-	for (int i = 0; i < size; ++i)
-		temp.data[i] = data[i] - a.data[i];
+	temp -= a;
 
 	return *this;
 }
@@ -733,10 +728,9 @@ UU::CAngle<T, size, radians> UU::CAngle<T, size, radians>::operator-(const CAngl
 template<class T, size_t size, bool radians>
 UU::CAngle<T, size, radians> UU::CAngle<T, size, radians>::operator*(T t) const
 {
-	CAngle<T, size, radians> temp;
+	CAngle<T, size, radians> temp(*this);
 
-	for (size_t i = 0; i < size; ++i)
-		temp.data[i] = data[i] * t;
+	temp *= t;
 
 	return temp;
 }
@@ -744,10 +738,9 @@ UU::CAngle<T, size, radians> UU::CAngle<T, size, radians>::operator*(T t) const
 template<class T, size_t size, bool radians>
 UU::CAngle<T, size, radians> UU::CAngle<T, size, radians>::operator/(T t) const
 {
-	CAngle<T, size, radians> temp;
+	CAngle<T, size, radians> temp(*this);
 
-	for (int i = 0; i < size; ++i)
-		temp.data[i] = data[i] / t;
+	temp /= t;
 
 	return *this;
 }
