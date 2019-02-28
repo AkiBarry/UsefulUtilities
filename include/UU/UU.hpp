@@ -5,16 +5,16 @@ namespace UU
 	class CColour;
 	class CHSB;
 
-	template <typename T, size_t dim>
+	template <class T, size_t dim>
 	class CVector;
 
-	template <typename T, size_t dim, bool radian = false>
+	template <class T, size_t dim, bool radian = false>
 	class CAngle;
 
-	template <typename T, size_t rows, size_t columns>
+	template <class T, size_t rows, size_t columns>
 	class CMatrix;
 
-	template <typename T>
+	template <class T, size_t size_of_state = 4>
 	class CRandom;
 
 	using CVec2f = CVector<float, 2>;
