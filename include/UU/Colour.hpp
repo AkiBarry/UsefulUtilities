@@ -8,7 +8,7 @@ public:
 
 	uint8_t							r, g, b, a;
 
-	CColour() : r(0), g(0), b(0), a(255) {}
+	constexpr CColour() : r(0), g(0), b(0), a(255) {}
 	CColour(const CColour & col) = default;
 	CColour(CColour && col) = default;
 	~CColour() = default;
