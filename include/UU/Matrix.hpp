@@ -47,6 +47,8 @@ namespace UU
 		template<typename = std::enable_if_t<(rows > 0 && columns > 0)>>
 		T												Det() const;
 
+		void											Randomize(T min, T max);
+
 		CMatrix<T, rows - 1, columns - 1>				Cofactor(size_t row_index, size_t col_index) const;
 
 		CMatrix<T, rows, columns>						Transpose() const;
@@ -287,6 +289,18 @@ T UU::CMatrix<T, rows, columns>::Det() const
 		return data[0][0] * data[1][1] - data[0][1] * data[1][0];
 
 	return DetHelper<T, size>(*this);
+}
+
+template<typename T, size_t rows, size_t columns>
+void UU::CMatrix<T, rows, columns>::Randomize(T min, T max)
+{
+	std::random_device pure;
+	std::mt19937 gen(pure());
+	std::uniform_real_distribution<T> dist(min, max);
+	
+	for (size_t i = 0; i < rows; ++i)
+		for (size_t j = 0; j < columns; ++j)
+			data[i][j] = dist(gen);
 }
 
 template<typename T, size_t rows, size_t columns>
