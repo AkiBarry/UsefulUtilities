@@ -1,407 +1,394 @@
 #pragma once
-#include <cmath>
 
-namespace UU::NMath
+#include <vector>
+#include <corecrt_math.h>
+#include <type_traits>
+
+#include "Constants.hpp"
+#include "Vector.hpp"
+#include "Matrix.hpp"
+
+namespace UU
 {
-	constexpr float		FLT_PI =		3.141592653f;
-	constexpr float		FLT_INV_PI =	1.f / FLT_PI;
-	constexpr float		FLT_E =			2.718281828f;
-		
-	constexpr double	DBL_PI =		3.141592653589793;
-	constexpr double	DBL_INV_PI =	1.0 / DBL_PI;
-	constexpr double	DBL_E =			2.718281828459045;
-		
-	constexpr float		FLT_RAD2DEG =	180.f / FLT_PI;
-	constexpr float		FLT_DEG2RAD =	FLT_PI / 180.f;
-		
-	constexpr double	DBL_RAD2DEG =	180.f / DBL_PI;
-	constexpr double	DBL_DEG2RAD =	DBL_PI / 180.f;
-
-	template <class T>
+	template <typename T>
 	T Sign(T val);
 
-	template <class T>
+	template <typename T>
 	T Abs(T val);
 
-	template <class T>
-	T Min(T a, T b);
+	template <typename T>
+	T Min(T val);
 
-	template <class T>
+	template <typename T>
+	T Min(T a, T b);
+	
+	template <typename T, typename... Ts>
+	T Min(T val1, T val2, Ts... vals);
+
+	template <typename T>
+	T Max(T val);
+
+	template <typename T>
 	T Max(T a, T b);
 
-	template <class T>
+	template <typename T, typename... Ts>
+	T Max(T val1, T val2, Ts... vals);
+
+	template <typename T>
 	T Clamp(T x, T min, T max);
 
-	template <class T>
+	template <typename T>
 	T Lerp(T min, T max, T factor);
 
-	template <class T>
-	T NormalizeAngle(T angle);
+	template <typename T>
+	T Mod(T a, T b);
 
-	inline float	Mod(float a, float b);
-	inline double	Mod(double a, double b);
+	template <typename T>
+	T Sin(T val);
 
-	inline float	Sin(float val);
-	inline float	Cos(float val);
-	inline float	Tan(float val);
+	template <typename T>
+	T Cos(T val);
 
-	inline void		SinCos(float val, float & sin_val, float & cos_val);
+	template <typename T>
+	T Tan(T val);
+	
+	template <typename T>
+	void SinCos(T val, T& sin_val, T& cos_val);
 
-	inline double	Sin(double val);
-	inline double	Cos(double val);
-	inline double	Tan(double val);
+	template <typename T>
+	T ASin(T val);
 
-	inline void		SinCos(double val, double & sin_val, double & cos_val);
+	template <typename T>
+	T ACos(T val);
 
-	inline float	ASin(float val);
-	inline float	ACos(float val);
-	inline float	ATan(float val);
-	inline float	ATan2(float y, float x);
+	template <typename T>
+	T ATan(T val);
 
-	inline double	ASin(double val);
-	inline double	ACos(double val);
-	inline double	ATan(double val);
-	inline double	ATan2(double y, double x);
+	template <typename T>
+	T ATan2(T y, T x);
 
-	inline float	Sqrt(float val);
-	inline float	InvSqrt(float val);
+	template <typename T>
+	T Sqrt(T val);
 
-	inline double	Sqrt(double val);
-	inline double	InvSqrt(double val);
+	template <typename T>
+	T InvSqrt(T val);
 
-	inline float	Exp(float val);
-	inline float	Ln(float val);
-	inline float	Pow(float a, float b);
+	template <typename T>
+	T Exp(T val);
 
-	inline double	Exp(double val);
-	inline double	Ln(double val);
-	inline double	Pow(double a, double b);
+	template <typename T>
+	T Ln(T val);
 
-	inline float	Floor(float val);
-	inline float	Ceil(float val);
-	inline float	Trunc(float val);
-	inline float	Round(float val);
+	template <typename T>
+	T Pow(T a, T b);
 
-	inline double	Floor(double val);
-	inline double	Ceil(double val);
-	inline double	Trunc(double val);
-	inline double	Round(double val);
+	template<typename T>
+	T Floor(T val);
 
-	inline bool		IsNormal(float val);
-	inline bool		IsFinite(float val);
-	inline bool		IsNan(float val);
-	inline bool		IsInf(float val);
+	template <typename T>
+	T Ceil(T val);
 
-	inline bool		IsNormal(double val);
-	inline bool		IsFinite(double val);
-	inline bool		IsNan(double val);
-	inline bool		IsInf(double val);
+	template <typename T>
+	T Trunc(T val);
 
-	inline float	Hypot(float x, float y);
-	inline double	Hypot(double x, double y);
+	template <typename T>
+	T Round(T val);
 
-	inline float	RadToDeg(float angle);
-	inline float	DegToRad(float angle);
+	template <typename T>
+	bool IsNormal(T val);
 
-	inline double	RadToDeg(double angle);
-	inline double	DegToRad(double angle);
+	template <typename T>
+	bool IsFinite(T val);
+
+	template <typename T>
+	bool IsNan(T val);
+
+	template <typename T>
+	bool IsInf(T val);
+
+	template<typename T, typename... Ts>
+	T Hypot(T val1, Ts... vals);
+
+	template<typename T>
+	T RadToDeg(T angle);
+
+	template<typename T>
+	T DegToRad(T angle);
 }
 
-template <class T>
-T UU::NMath::Sign(const T t)
+template <typename T>
+T UU::Sign(const T val)
 {
-	if (!t)
-	{
+	if (val == T(0))
 		return 0;
-	}
-	return t > T(0) ? T(1) : T(-1);
+
+	return val > T(0) ? T(1) : T(-1);
 }
 
-template <class T>
-T UU::NMath::Abs(const T val)
+template <typename T>
+T UU::Abs(const T val)
 {
 	return val < 0 ? -val : val;
 }
 
-template <class T>
-T UU::NMath::Min(const T a, const T b)
+template<typename T>
+T UU::Min(T val)
+{
+	return val;
+}
+
+template <typename T>
+T UU::Min(const T a, const T b)
 {
 	return a < b ? a : b;
 }
 
-template <class T>
-T UU::NMath::Max(const T a, const T b)
+template<typename T, typename ... Ts>
+T UU::Min(T val1, T val2, Ts... vals)
+{
+	if (val1 < val2)
+		return Min(val1, vals...);
+
+	return Min(val2, vals...);
+}
+
+template<typename T>
+T UU::Max(T val)
+{
+	return val;
+}
+
+template <typename T>
+T UU::Max(const T a, const T b)
 {
 	return a > b ? a : b;
 }
 
-template <class T>
-T UU::NMath::Clamp(const T x, const T min, const T max)
+template<typename T, typename ... Ts>
+T UU::Max(T val1, T val2, Ts... vals)
+{
+	if (val1 > val2)
+		return Max(val1, vals...);
+
+	return Max(val2, vals...);
+}
+
+template <typename T>
+T UU::Clamp(const T x, const T min, const T max)
 {
 	return x > max ? max : x < min ? min : x;
 }
 
 template<typename T>
-T UU::NMath::Lerp(T min, T max, T factor)
+T UU::Lerp(T min, T max, T factor)
 {
 	return min + (max - min) * factor;
 }
 
-template<class T>
-T UU::NMath::NormalizeAngle(T angle)
+template <typename T>
+T UU::Mod(const T a, const T b)
 {
-	return fmod(angle + T(180), T(360)) - T(180);
+	if constexpr (std::is_floating_point<T>::value)
+		return fmod(a, b);
+	
+	return a % b;
 }
 
-float UU::NMath::Mod(const float a, const float b)
-{
-	return fmodf(a, b);
-}
-
-double UU::NMath::Mod(const double a, const double b)
-{
-	return fmod(a, b);
-}
-
-float UU::NMath::Sin(const float val)
-{
-	return sinf(val);
-}
-
-float UU::NMath::Cos(const float val)
-{
-	return cosf(val);
-}
-
-float UU::NMath::Tan(const float val)
-{
-	return tanf(val);
-}
-
-void UU::NMath::SinCos(float val, float & sin_val, float & cos_val)
-{
-	sin_val = Sin(val);
-	cos_val = Cos(val);
-}
-
-double UU::NMath::Sin(const double val)
+template<typename T>
+T UU::Sin(T val)
 {
 	return sin(val);
 }
 
-double UU::NMath::Cos(const double val)
+template<typename T>
+T UU::Cos(T val)
 {
 	return cos(val);
 }
 
-double UU::NMath::Tan(const double val)
+template<typename T>
+T UU::Tan(T val)
 {
 	return tan(val);
 }
 
-void UU::NMath::SinCos(double val, double & sin_val, double & cos_val)
+template<typename T>
+void UU::SinCos(T val, T& sin_val, T& cos_val)
 {
 	sin_val = Sin(val);
 	cos_val = Cos(val);
 }
 
-float UU::NMath::ASin(const float val)
+template<typename T>
+T UU::ASin(T val)
 {
-	return asinf(val);
+	return static_cast<T>(asin(val));
 }
 
-float UU::NMath::ACos(const float val)
+template<typename T>
+T UU::ACos(T val)
 {
-	return acosf(val);
+	return static_cast<T>(acos(val));
 }
 
-float UU::NMath::ATan(const float val)
+template<typename T>
+T UU::ATan(T val)
 {
-	return atanf(val);
+	return static_cast<T>(val);
 }
 
-float UU::NMath::ATan2(const float y, const float x)
+template<typename T>
+T UU::ATan2(T y, T x)
 {
-	return atan2f(y, x);
+	return static_cast<T>(atan2(y, x));
 }
 
-double UU::NMath::ASin(const double val)
+template<typename T>
+T UU::Sqrt(T val)
 {
-	return asin(val);
+	return static_cast<T>(sqrt(val));
 }
 
-double UU::NMath::ACos(const double val)
+template<typename T>
+T UU::InvSqrt(T val)
 {
-	return acos(val);
+	return T(1) / Sqrt(val);
 }
 
-double UU::NMath::ATan(const double val)
-{
-	return atan(val);
-}
-
-double UU::NMath::ATan2(const double y, const double x)
-{
-	return atan2(y, x);
-}
-
-float UU::NMath::Sqrt(const float val)
-{
-	return sqrtf(val);
-}
-
-float UU::NMath::InvSqrt(const float val)
-{
-	return 1.f / sqrtf(val);
-}
-
-double UU::NMath::Sqrt(const double val)
-{
-	return sqrt(val);
-}
-
-double UU::NMath::InvSqrt(const double val)
-{
-	return 1.0 / sqrt(val);
-}
-
-float UU::NMath::Exp(const float val)
-{
-	return expf(val);
-}
-
-float UU::NMath::Ln(const float val)
-{
-	return logf(val);
-}
-
-float UU::NMath::Pow(const float a, const float b)
-{
-	return powf(a, b);
-}
-
-double UU::NMath::Exp(const double val)
+template<typename T>
+T UU::Exp(T val)
 {
 	return exp(val);
 }
 
-double UU::NMath::Ln(const double val)
+template<typename T>
+T UU::Ln(T val)
 {
 	return log(val);
 }
 
-double UU::NMath::Pow(const double a, const double b)
+template<typename T>
+T UU::Pow(T a, T b)
 {
 	return pow(a, b);
 }
 
-float UU::NMath::Floor(const float val)
+template<typename T>
+T UU::Floor(T val)
 {
-	return floorf(val);
-}
-
-float UU::NMath::Ceil(const float val)
-{
-	return ceilf(val);
-}
-
-float UU::NMath::Trunc(const float val)
-{
-	return truncf(val);
-}
-
-float UU::NMath::Round(const float val)
-{
-	return roundf(val);
-}
-
-double UU::NMath::Floor(const double val)
-{
+	if constexpr (std::is_integral<T>::value)
+		return val;
+	
 	return floor(val);
 }
 
-double UU::NMath::Ceil(const double val)
+template<typename T>
+T UU::Ceil(T val)
 {
+	if constexpr (std::is_integral<T>::value)
+		return val;
+
 	return ceil(val);
 }
 
-double UU::NMath::Trunc(const double val)
+template<typename T>
+T UU::Trunc(T val)
 {
+	if constexpr (std::is_integral<T>::value)
+		return val;
+	
 	return trunc(val);
 }
 
-double UU::NMath::Round(const double val)
+template<typename T>
+T UU::Round(T val)
 {
+	if constexpr (std::is_integral<T>::value)
+		return val;
+
 	return round(val);
 }
 
-bool UU::NMath::IsNormal(const float val)
+template <typename T>
+bool UU::IsNormal(const T val)
 {
+	if constexpr (std::is_integral<T>::value || !std::is_floating_point<T>::value)
+		return true;
+
 	return isnormal(val);
 }
 
-bool UU::NMath::IsFinite(const float val)
+template<typename T>
+bool UU::IsFinite(T val)
 {
+	if constexpr (std::is_integral<T>::value || !std::is_floating_point<T>::value)
+		return true;
+
 	return isfinite(val);
 }
 
-bool UU::NMath::IsNan(const float val)
+template<typename T>
+bool UU::IsNan(T val)
 {
+	if constexpr (std::is_integral<T>::value || !std::is_floating_point<T>::value)
+		return false;
+
 	return isnan(val);
 }
 
-bool UU::NMath::IsInf(const float val)
+template<typename T>
+bool UU::IsInf(T val)
 {
+	if constexpr (std::is_integral<T>::value || !std::is_floating_point<T>::value)
+		return false;
+
 	return isinf(val);
 }
 
-bool UU::NMath::IsNormal(const double val)
+template<typename T, typename ... Ts>
+T UU::Hypot(T val1, Ts... vals)
 {
-	return isnormal(val);
+	val1 = Abs(val1);
+	T max_value = Max(Abs(val1), Abs(std::forward<Ts>(vals))...);
+
+	if (max_value == T(0))
+		return T(0);
+
+	if constexpr (std::is_integral<T>::value)
+	{
+		double val = 0.0;
+		std::vector<double> vec = {static_cast<double>(val1), static_cast<double>(vals)...};
+		for(double & i : vec)
+		{
+			i /= max_value;
+			i *= i;
+			val += i;
+		}
+		val = Sqrt(val);
+
+		return static_cast<T>(max_value * val);
+	} else {
+		T val = T(0);
+		std::vector<T> vec = {val1, vals...};
+		for (size_t i = 0; i < vec.size(); ++i)
+		{
+			vec[i] /= max_value;
+			vec[i] *= vec[i];
+			val += vec[i];
+		}
+		val = Sqrt(val);
+		return static_cast<T>(max_value * val);
+	}
 }
 
-bool UU::NMath::IsFinite(const double val)
+template<typename T>
+T UU::DegToRad(T angle)
 {
-	return isfinite(val);
+	return angle * T(DBL_PI / 180.0);
 }
 
-bool UU::NMath::IsNan(const double val)
+template<typename T>
+T UU::RadToDeg(T angle)
 {
-	return isnan(val);
+	return angle * T(180.f / FLT_PI);
 }
-
-bool UU::NMath::IsInf(const double val)
-{
-	return isinf(val);
-}
-
-float UU::NMath::Hypot(const float x, const float y)
-{
-	return hypotf(x, y);
-}
-
-double UU::NMath::Hypot(const double x, const double y)
-{
-	return hypot(x, y);
-}
-
-float UU::NMath::RadToDeg(float angle)
-{
-	return angle * 180.f / FLT_PI;
-}
-
-float UU::NMath::DegToRad(float angle)
-{
-	return angle * FLT_PI / 180.f;
-}
-
-double UU::NMath::RadToDeg(double angle)
-{
-	return angle * 180.0 / DBL_PI;
-}
-
-double UU::NMath::DegToRad(double angle)
-{
-	return angle * DBL_PI / 180.0;
-}
-

@@ -1,20 +1,24 @@
 #pragma once
 
+#include "Math.hpp"
+#include "Colour.hpp"
+
+/*
 namespace UU
 {
 	class CColour;
 	class CHSB;
 
-	template <class T, size_t dim>
+	template <typename T, size_t size>
 	class CVector;
 
-	template <class T, size_t dim, bool radian = false>
+	template <typename T, size_t size, bool radian = false>
 	class CAngle;
 
-	template <class T, size_t rows, size_t columns>
+	template <typename T, size_t rows, size_t columns>
 	class CMatrix;
 
-	template <class T, size_t size_of_state = 4>
+	template <typename T, size_t size_of_state = 4>
 	class CRandom;
 
 	using CVec2f = CVector<float, 2>;
@@ -49,4 +53,4 @@ namespace UU
 	using CAng3i = CAngle<int, 3, radians>;
 	template <bool radians = true>
 	using CAng4i = CAngle<int, 4, radians>;
-}
+}*/

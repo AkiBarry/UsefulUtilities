@@ -1,57 +1,78 @@
 #pragma once
 
-#include "UU.hpp"
-#include <initializer_list>
-#include <algorithm>
+#include <array>
 
-template <class T, size_t rows, size_t columns>
-class UU::CMatrix
+namespace UU
 {
-public:
-	T data[rows][columns];
+	template <typename T, size_t rows, size_t columns>
+	class CMatrix
+	{
+	public:
+		T data[rows][columns];
 
-	CMatrix() {}
-	CMatrix(std::initializer_list<std::initializer_list<T>> init_list);
+		CMatrix() = default;
+		CMatrix(std::array<std::array<T, columns>, rows> init_mat);
 
-	constexpr void									Zero();
+		constexpr void									Zero();
 
-	T *												operator[](size_t i);
-	const T *										operator[](size_t i) const;
+		T*												operator[](size_t i);
+		const T*										operator[](size_t i) const;
 
-	CMatrix &										operator=(const CMatrix & m);
+		CMatrix&										operator=(const CMatrix& m);
 
-	CMatrix &										operator+=(const CMatrix & m);
-	CMatrix &										operator-=(const CMatrix & m);
+		CMatrix&										operator+=(const CMatrix& m);
+		CMatrix&										operator-=(const CMatrix& m);
 
-	template<class U>
-	CMatrix &										operator*=(const CMatrix<U, columns, columns>& m);
+		template<typename U, typename = std::enable_if_t<rows == columns>>
+		CMatrix&										operator*=(const CMatrix<U, rows, columns>& m);
 
-	CMatrix &										operator*=(const T t);
-	CMatrix &										operator/=(const T t);
+		CMatrix&										operator*=(T t);
+		CMatrix&										operator/=(T t);
 
-	CMatrix											operator+(const CMatrix & m) const;
-	CMatrix											operator-(const CMatrix & m) const;
+		CMatrix											operator+(const CMatrix& m) const;
+		CMatrix											operator-(const CMatrix& m) const;
 
-	template<class U, size_t columns1>
-	CMatrix<decltype(T() * U()), rows, columns1> &	operator*(const CMatrix<U, columns, columns1>& m);
+		template<typename U, size_t columns1>
+		CMatrix<decltype(T() * U()), rows, columns1>	operator*(const CMatrix<U, columns, columns1> & m) const;
 
-	CMatrix											operator*(T t) const;
-	CMatrix											operator/(T t) const;
+		template<typename U>
+		CMatrix<decltype(T() * U()), rows, columns>		operator*(U val) const;
+		
+		template<typename U>
+		CMatrix<decltype(T() * U()), rows, columns>		operator/(U val) const;
 
-	bool											operator==(const CMatrix & m) const;
-	bool											operator!=(const CMatrix & m) const;
+		bool											operator==(const CMatrix& m) const;
+		bool											operator!=(const CMatrix& m) const;
 
-	T												Det() const;
+		template<typename = std::enable_if_t<(rows > 0 && columns > 0)>>
+		T												Det() const;
 
-	CMatrix<T, columns, rows>						Transpose() const;
-	void											TransposeInPlace();
+		CMatrix<T, rows - 1, columns - 1>				Cofactor(size_t row_index, size_t col_index) const;
 
-	void											Negate();
-	bool											IsZero() const;
+		CMatrix<T, rows, columns>						Transpose() const;
+		void											TransposeInPlace();
 
-	template<class U, size_t rows1, size_t columns1>
-	friend CMatrix<U, rows1, columns1>;
-};
+		void											Negate();
+		bool											IsZero() const;
+
+		friend std::ostream & operator<<(std::ostream & os, const CMatrix & v)
+		{
+			for(size_t i = 0; i < rows; ++i)
+			{
+				for (size_t j = 0; j < columns; ++j)
+				{
+					os << v.data[i][j] << " ";
+				}
+				os << "\n";
+			}
+
+			return os;
+		}
+
+		template <typename U, size_t rows1, size_t columns1>
+		friend class CMatrix;
+	};
+}
 
 template<typename T, size_t rows, size_t columns>
 constexpr void UU::CMatrix<T, rows, columns>::Zero()
@@ -61,24 +82,12 @@ constexpr void UU::CMatrix<T, rows, columns>::Zero()
 			data[i][j] = T();
 }
 
-template <typename T, size_t rows, size_t columns>
-UU::CMatrix<T, rows, columns>::CMatrix(std::initializer_list<std::initializer_list<T>> init_list)
+template<typename T, size_t rows, size_t columns>
+UU::CMatrix<T, rows, columns>::CMatrix(std::array<std::array<T, columns>, rows> init_mat)
 {
-	static_assert(init_list.size() == rows);
-
-	auto it = init_list.begin();
-	for (size_t i = 0; it != init_list.end(); ++i, ++it)
-	{
-		static_assert((*it).size() == columns);
-
-		auto inner_it = (*it).begin();
-		auto inner_list = (*it);
-
-		for (size_t j = 0; inner_it != inner_list.end(); ++j, ++inner_it)
-		{
-			data[i][j] = *inner_it;
-		}
-	}
+	for (int i = 0; i < rows; ++i)
+		for (size_t j = 0; j < columns; ++j)
+			data[i][j] = init_mat[i][j];
 }
 
 template <typename T, size_t rows, size_t columns>
@@ -94,7 +103,7 @@ const T* UU::CMatrix<T, rows, columns>::operator[](size_t i) const
 }
 
 template <typename T, size_t rows, size_t columns>
-UU::CMatrix<T, rows, columns>& UU::CMatrix<T, rows, columns>::operator=(const CMatrix& m)
+UU::CMatrix<T, rows, columns>& UU::CMatrix<T, rows, columns>::operator=(const CMatrix & m)
 {
 	for (int i = 0; i < rows; ++i)
 		for (int j = 0; j < columns; ++j)
@@ -104,7 +113,7 @@ UU::CMatrix<T, rows, columns>& UU::CMatrix<T, rows, columns>::operator=(const CM
 }
 
 template <typename T, size_t rows, size_t columns>
-UU::CMatrix<T, rows, columns>& UU::CMatrix<T, rows, columns>::operator+=(const CMatrix& m)
+UU::CMatrix<T, rows, columns> & UU::CMatrix<T, rows, columns>::operator+=(const CMatrix & m)
 {
 	for (int i = 0; i < rows; ++i)
 		for (int j = 0; j < columns; ++j)
@@ -114,7 +123,7 @@ UU::CMatrix<T, rows, columns>& UU::CMatrix<T, rows, columns>::operator+=(const C
 }
 
 template <typename T, size_t rows, size_t columns>
-UU::CMatrix<T, rows, columns>& UU::CMatrix<T, rows, columns>::operator-=(const CMatrix& m)
+UU::CMatrix<T, rows, columns> & UU::CMatrix<T, rows, columns>::operator-=(const CMatrix & m)
 {
 	for (int i = 0; i < rows; ++i)
 		for (int j = 0; j < columns; ++j)
@@ -124,11 +133,10 @@ UU::CMatrix<T, rows, columns>& UU::CMatrix<T, rows, columns>::operator-=(const C
 }
 
 template<typename T, size_t rows, size_t columns>
-template<class U>
-UU::CMatrix<T, rows, columns> & UU::CMatrix<T, rows, columns>::operator*=(const CMatrix<U, columns, columns> & m)
+template<typename U, typename>
+UU::CMatrix<T, rows, columns> & UU::CMatrix<T, rows, columns>::operator*=(const CMatrix<U, rows, columns> & m)
 {
 	CMatrix<T, rows, columns> temp;
-
 	temp.Zero();
 
 	for (size_t i = 0; i < rows; ++i)
@@ -142,7 +150,7 @@ UU::CMatrix<T, rows, columns> & UU::CMatrix<T, rows, columns>::operator*=(const 
 }
 
 template <typename T, size_t rows, size_t columns>
-UU::CMatrix<T, rows, columns>& UU::CMatrix<T, rows, columns>::operator*=(const T t)
+UU::CMatrix<T, rows, columns> & UU::CMatrix<T, rows, columns>::operator*=(T t)
 {
 	for (size_t i = 0; i < rows; ++i)
 		for (size_t j = 0; j < columns; ++j)
@@ -152,56 +160,41 @@ UU::CMatrix<T, rows, columns>& UU::CMatrix<T, rows, columns>::operator*=(const T
 }
 
 template <typename T, size_t rows, size_t columns>
-UU::CMatrix<T, rows, columns>& UU::CMatrix<T, rows, columns>::operator/=(const T t)
+UU::CMatrix<T, rows, columns> & UU::CMatrix<T, rows, columns>::operator/=(T t)
 {
-	if constexpr(std::is_floating_point<T>::value)
-	{
-		constexpr T invt = static_cast<T>(1) / t;
-
-		for (int i = 0; i < rows; ++i)
-			for (int j = 0; j < columns; ++j)
-				data[i][j] *= invt;
-	}
-	else
-	{
-		for (int i = 0; i < rows; ++i)
-			for (int j = 0; j < columns; ++j)
-				data[i][j] /= t;
-	}
+	for (int i = 0; i < rows; ++i)
+		for (int j = 0; j < columns; ++j)
+			data[i][j] /= t;
 
 	return *this;
 }
 
 template <typename T, size_t rows, size_t columns>
-UU::CMatrix<T, rows, columns> UU::CMatrix<T, rows, columns>::operator+(const CMatrix& m) const
+UU::CMatrix<T, rows, columns> UU::CMatrix<T, rows, columns>::operator+(const CMatrix & m) const
 {
 	CMatrix temp;
 
-	for (int i = 0; i < rows; ++i)
-		for (int j = 0; j < columns; ++j)
-			temp.data[i][j] = data[i][j] + m.data[i][j];
+	temp += std::forward<CMatrix>(m);
 
 	return temp;
 }
 
 template <typename T, size_t rows, size_t columns>
-UU::CMatrix<T, rows, columns> UU::CMatrix<T, rows, columns>::operator-(const CMatrix& m) const
+UU::CMatrix<T, rows, columns> UU::CMatrix<T, rows, columns>::operator-(const CMatrix & m) const
 {
 	CMatrix temp;
 
-	for (int i = 0; i < rows; ++i)
-		for (int j = 0; j < columns; ++j)
-			temp.data[i][j] = data[i][j] - m.data[i][j];
+	temp -= std::forward<CMatrix>(m);
 
 	return temp;
 }
 
-template<class T, size_t rows, size_t columns>
-template<class U, size_t columns1>
-UU::CMatrix<decltype(T() * U()), rows, columns1> & UU::CMatrix<T, rows, columns>::operator*(const CMatrix<U, columns, columns1> & m)
+template<typename T, size_t rows, size_t columns>
+template<typename U, size_t columns1>
+UU::CMatrix<decltype(T() * U()), rows, columns1> UU::CMatrix<T, rows, columns>::operator*(
+	const CMatrix<U, columns, columns1> & m) const
 {
-	CMatrix<decltype(T() * U()), rows, columns1> temp;
-
+	CMatrix<decltype(T() * U()), rows, columns1> temp{};
 	temp.Zero();
 
 	for (size_t i = 0; i < rows; ++i)
@@ -213,42 +206,29 @@ UU::CMatrix<decltype(T() * U()), rows, columns1> & UU::CMatrix<T, rows, columns>
 }
 
 template <typename T, size_t rows, size_t columns>
-UU::CMatrix<T, rows, columns> UU::CMatrix<T, rows, columns>::operator*(T t) const
+template<typename U>
+UU::CMatrix<decltype(T() * U()), rows, columns> UU::CMatrix<T, rows, columns>::operator*(U val) const
 {
-	CMatrix temp;
+	CMatrix<decltype(T() * U()), rows, columns> temp = *this;
 
-	for (int i = 0; i < rows; ++i)
-		for (int j = 0; j < columns; ++j)
-			temp.data[i][j] = data[i][j] * t;
+	temp *= val;
 
 	return temp;
 }
 
 template <typename T, size_t rows, size_t columns>
-UU::CMatrix<T, rows, columns> UU::CMatrix<T, rows, columns>::operator/(T t) const
+template<typename U>
+UU::CMatrix<decltype(T() * U()), rows, columns> UU::CMatrix<T, rows, columns>::operator/(U val) const
 {
-	CMatrix temp;
+	CMatrix<decltype(T() * U()), rows, columns> temp = *this;
 
-	if constexpr(std::is_floating_point<T>::value)
-	{
-		constexpr T invt = static_cast<T>(1) / t;
-
-		for (int i = 0; i < rows; ++i)
-			for (int j = 0; j < columns; ++j)
-				temp.data[i][j] = data[i][j] * invt;
-	}
-	else
-	{
-		for (int i = 0; i < rows; ++i)
-			for (int j = 0; j < columns; ++j)
-				temp.data[i][j] = data[i][j] / t;
-	}
+	temp /= val;
 
 	return *this;
 }
 
 template <typename T, size_t rows, size_t columns>
-bool UU::CMatrix<T, rows, columns>::operator==(const CMatrix& m) const
+bool UU::CMatrix<T, rows, columns>::operator==(const CMatrix & m) const
 {
 	for (int i = 0; i < rows; ++i)
 		for (int j = 0; j < columns; ++j)
@@ -256,71 +236,98 @@ bool UU::CMatrix<T, rows, columns>::operator==(const CMatrix& m) const
 			if (data[i][j] != m.data[i][j])
 				return false;
 		}
-		
+
 	return true;
 }
 
 template <typename T, size_t rows, size_t columns>
-bool UU::CMatrix<T, rows, columns>::operator!=(const CMatrix& m) const
+bool UU::CMatrix<T, rows, columns>::operator!=(const CMatrix & m) const
 {
-	for (int i = 0; i < rows; ++i)
-		for (int j = 0; j < columns; ++j)
-		{
-			if (data[i][j] != m.data[i][j])
-				return true;
-		}
-
-	return false;
+	return !(*this == m);
 }
 
-template<class T, size_t rows, size_t columns>
+template<typename T, size_t size>
+T DetHelper(UU::CMatrix<T, size, size> m)
+{
+	if constexpr (size == 1)
+	{
+		return m[0][0];
+	}
+	else
+	{
+		T val = T(0);
+
+		bool sign = true;
+
+		for (size_t i = 0; i < size; ++i)
+		{
+			val += (sign ? T(1) : T(-1)) * m[0][i] * m.Cofactor(0, i).Det();
+
+			sign = !sign;
+		}
+
+		return val;
+	}
+}
+
+	
+
+template<typename T, size_t rows, size_t columns>
+template<typename>
 T UU::CMatrix<T, rows, columns>::Det() const
 {
-	static_assert(rows == columns);
+	static_assert(rows == columns, "Matrix must be square");
 
-	T det = T();
+	constexpr size_t size = rows;
 
-	constexpr size_t N = rows;
-
-	if constexpr (N == 2)
-	{
+	if constexpr (size == 1)
+		return data[0][0];
+	
+	if constexpr (size == 2)
 		return data[0][0] * data[1][1] - data[0][1] * data[1][0];
-	}
 
-	for (size_t i = 0; i < N; i++) {
-
-		CMatrix<T, rows - 1, columns - 1> submatrix;
-
-		
-		for (size_t j = 1; j < N; j++) {
-			size_t sub_k = 0;
-			for (size_t k = 0; k < N; k++) {
-				if (k == i)
-					continue;
-				submatrix[j - 1][sub_k] = data[j][k];
-				++sub_k;
-			}
-		}
-
-		det += ((N % 2 ? T(1) : -T(1)) * data[0][i] * submatrix.Det());
-	}
-
-	return T();
+	return DetHelper<T, size>(*this);
 }
 
-template<class T, size_t rows, size_t columns>
-UU::CMatrix<T, columns, rows> UU::CMatrix<T, rows, columns>::Transpose() const
+template<typename T, size_t rows, size_t columns>
+UU::CMatrix<T, rows - 1, columns - 1>
+		UU::CMatrix<T, rows, columns>::Cofactor(size_t row_index, size_t col_index) const
 {
-	CMatrix<T, columns, rows> temp;
+	static_assert(rows > 1 || columns > 1);
+	
+	CMatrix<T, rows - 1, columns - 1> temp{};
 
-	for (size_t i = 0; i < rows; ++i)
-		for (size_t j = 0; j < columns; ++j)
-			temp.data[j][i] = data[i][j];
+	for (size_t i = 0, m = 0; i < rows; ++i)
+	{
+		if (i == row_index)
+			continue;
+
+		for (size_t j = 0, n = 0; j < columns; ++j)
+		{
+			if (j == col_index)
+				continue;
+
+			temp.data[m][n] = this->data[i][j];
+
+			++n;
+		}
+		++m;
+	}
+	
+	return temp;
+}
+
+template<typename T, size_t rows, size_t columns>
+UU::CMatrix<T, rows, columns> UU::CMatrix<T, rows, columns>::Transpose() const
+{
+	CMatrix<T, columns, rows> temp = *this;
+
+	temp.TransposeInPlace();
 
 	return std::move(temp);
 }
 
-template<class T, size_t rows, size_t columns>
+template<typename T, size_t rows, size_t columns>
 void UU::CMatrix<T, rows, columns>::TransposeInPlace()
 {
 	static_assert(rows == columns);

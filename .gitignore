@@ -12,3 +12,5 @@
 *.tlog
 *.cpp
 *.TMP
+*.ilk
+*.idb
