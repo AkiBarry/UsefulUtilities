@@ -8,10 +8,12 @@ namespace UU
 	class CMatrix
 	{
 	public:
-		T data[rows][columns];
+		T** data;
 
-		CMatrix() = default;
+		CMatrix();
 		CMatrix(std::array<std::array<T, columns>, rows> init_mat);
+
+		~CMatrix();
 
 		constexpr void									Zero();
 
@@ -85,11 +87,30 @@ constexpr void UU::CMatrix<T, rows, columns>::Zero()
 }
 
 template<typename T, size_t rows, size_t columns>
+UU::CMatrix<T, rows, columns>::CMatrix()
+{
+	data = new T*[rows];
+	for (size_t i = 0; i < rows; ++i)
+		data[i] = new T[columns];
+}
+
+template<typename T, size_t rows, size_t columns>
 UU::CMatrix<T, rows, columns>::CMatrix(std::array<std::array<T, columns>, rows> init_mat)
 {
+	CMatrix();
+	
 	for (int i = 0; i < rows; ++i)
 		for (size_t j = 0; j < columns; ++j)
 			data[i][j] = init_mat[i][j];
+}
+
+template<typename T, size_t rows, size_t columns>
+UU::CMatrix<T, rows, columns>::~CMatrix()
+{
+	for (size_t i = 0; i < rows; ++i)
+		delete[] data[i];
+
+	delete[] data;
 }
 
 template <typename T, size_t rows, size_t columns>
