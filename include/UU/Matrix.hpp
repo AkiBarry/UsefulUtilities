@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+inline int nextval = 0;
 
 namespace UU
 {
@@ -11,6 +12,11 @@ namespace UU
 		T** data;
 
 		CMatrix();
+		
+		template<typename U>
+		CMatrix(const CMatrix<U, rows, columns>& init_mat);
+		CMatrix(CMatrix<T, rows, columns>&& init_mat) noexcept : data(std::exchange(init_mat.data, nullptr)) {}
+		
 		CMatrix(std::array<std::array<T, columns>, rows> init_mat);
 
 		~CMatrix();
@@ -20,7 +26,8 @@ namespace UU
 		T*												operator[](size_t i);
 		const T*										operator[](size_t i) const;
 
-		CMatrix&										operator=(const CMatrix& m);
+		CMatrix&										operator=(const CMatrix<T, rows, columns>& m);
+		CMatrix&										operator=(CMatrix<T, rows, columns>&& m) noexcept;
 
 		CMatrix&										operator+=(const CMatrix& m);
 		CMatrix&										operator-=(const CMatrix& m);
@@ -82,7 +89,7 @@ template<typename T, size_t rows, size_t columns>
 constexpr void UU::CMatrix<T, rows, columns>::Zero()
 {
 	for (size_t i = 0; i < rows; ++i)
-		for (size_t j = 0; j < rows; ++j)
+		for (size_t j = 0; j < columns; ++j)
 			data[i][j] = T();
 }
 
@@ -92,6 +99,17 @@ UU::CMatrix<T, rows, columns>::CMatrix()
 	data = new T*[rows];
 	for (size_t i = 0; i < rows; ++i)
 		data[i] = new T[columns];
+}
+
+template<typename T, size_t rows, size_t columns>
+template<typename U>
+UU::CMatrix<T, rows, columns>::CMatrix(const CMatrix<U, rows, columns>& init_mat)
+{
+	CMatrix();
+	
+	for (int i = 0; i < rows; ++i)
+		for (size_t j = 0; j < columns; ++j)
+			data[i][j] = T(init_mat[i][j]);
 }
 
 template<typename T, size_t rows, size_t columns>
@@ -107,8 +125,13 @@ UU::CMatrix<T, rows, columns>::CMatrix(std::array<std::array<T, columns>, rows> 
 template<typename T, size_t rows, size_t columns>
 UU::CMatrix<T, rows, columns>::~CMatrix()
 {
+	if(data == nullptr)
+		return;
+	
 	for (size_t i = 0; i < rows; ++i)
+	{
 		delete[] data[i];
+	}
 
 	delete[] data;
 }
@@ -133,6 +156,12 @@ UU::CMatrix<T, rows, columns>& UU::CMatrix<T, rows, columns>::operator=(const CM
 			data[i][j] = m.data[i][j];
 
 	return *this;
+}
+
+template<typename T, size_t rows, size_t columns>
+UU::CMatrix<T, rows, columns> & UU::CMatrix<T, rows, columns>::operator=(CMatrix<T, rows, columns> && m) noexcept
+{
+	 data = std::exchange(m.data, nullptr);
 }
 
 template <typename T, size_t rows, size_t columns>
@@ -217,9 +246,9 @@ template<typename U, size_t columns1>
 UU::CMatrix<decltype(T() * U()), rows, columns1> UU::CMatrix<T, rows, columns>::operator*(
 	const CMatrix<U, columns, columns1> & m) const
 {
-	CMatrix<decltype(T() * U()), rows, columns1> temp{};
+	CMatrix<decltype(T() * U()), rows, columns1> temp;
 	temp.Zero();
-
+	
 	for (size_t i = 0; i < rows; ++i)
 		for (size_t j = 0; j < columns1; ++j)
 			for (size_t k = 0; k < columns; ++k)
