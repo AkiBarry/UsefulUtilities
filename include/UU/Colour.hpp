@@ -57,6 +57,8 @@ namespace UU {
 		static const					CColour		Yellow;
 		static const					CColour		Cyan;
 		static const					CColour		Magenta;
+		static const					CColour		Orange;
+		static const					CColour		Purple;
 	};
 
 	class CHSB final

@@ -10,6 +10,8 @@ const UU::CColour UU::CColour::Blue(0, 0, 255);
 const UU::CColour UU::CColour::Yellow(255, 255, 0);
 const UU::CColour UU::CColour::Cyan(0, 255, 255);
 const UU::CColour UU::CColour::Magenta(255, 0, 255);
+const UU::CColour UU::CColour::Orange(255, 128, 0);
+const UU::CColour UU::CColour::Purple(128, 0, 128);
 
 // CColour - Function Definitions
 
