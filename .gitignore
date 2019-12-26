@@ -10,7 +10,7 @@
 *.log
 *.pdb
 *.tlog
-*.cpp
 *.TMP
 *.ilk
 *.idb
+include/UU/Main.cpp
