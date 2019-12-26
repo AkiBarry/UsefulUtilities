@@ -13,4 +13,3 @@
 *.TMP
 *.ilk
 *.idb
-include/UU/Main.cpp
