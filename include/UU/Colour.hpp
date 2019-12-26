@@ -43,6 +43,8 @@ namespace UU {
 		uint32_t &						AsRawColour();
 		const uint32_t &				AsRawColour() const;
 
+		CColour							WithAlpha(uint8_t a);
+
 		float							Hue() const;
 		float							Saturation() const;
 		float							Brightness() const;
