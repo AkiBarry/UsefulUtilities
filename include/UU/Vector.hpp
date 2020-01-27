@@ -20,7 +20,7 @@ namespace UU
 		CVector() = default;
 
 		template<typename... Args>
-		CVector(Args ... args) : CVector({std::forward<T>(args)...}) {}
+		CVector(Args... args) : CVector({std::forward<T>(static_cast<T>(args))...}) {}
 
 		CVector(std::initializer_list<T> init_list);
 
@@ -427,7 +427,7 @@ T UU::CVector<T, size>::Length() const
 	for (int i = 0; i < size; ++i)
 		temp += data[i] * data[i];
 
-	return Sqrt(temp);
+	return UU::Sqrt(temp);
 }
 
 template<typename T, size_t size>
@@ -480,7 +480,7 @@ UU::CVector<T, size> UU::CVector<T, size>::Rotated(
 	{
 		float s, c;
 
-		SinCos(a[0], s, c);
+		UU::SinCos(a[0], s, c);
 
 		temp[0] = (*this).Dot(CVec2f(c, -s));
 		temp[1] = (*this).Dot(CVec2f(s, c));
@@ -489,9 +489,9 @@ UU::CVector<T, size> UU::CVector<T, size>::Rotated(
 	{
 		float sp, sy, sr, cp, cy, cr;
 
-		SinCos(DegToRad(a[0]), sp, cp);
-		SinCos(DegToRad(a[1]), sy, cy);
-		SinCos(DegToRad(a[2]), sr, cr);
+		UU::SinCos(DegToRad(a[0]), sp, cp);
+		UU::SinCos(DegToRad(a[1]), sy, cy);
+		UU::SinCos(DegToRad(a[2]), sr, cr);
 
 		const float cr_cy = cr * cy;
 		const float cr_sy = cr * sy;
@@ -538,12 +538,12 @@ UU::CAngle<U, size * (size - 1) / 2, radians> UU::CVector<T, size>::ToCAngle() c
 	}
 	else if constexpr (size == 2)
 	{
-		temp = CAngle<U, size * (size - 1) / 2, radians>(ATan2(U(normalized_vec.data[1])));
+		temp = CAngle<U, size * (size - 1) / 2, radians>(UU::ATan2(U(normalized_vec.data[1])));
 	}
 	else if constexpr (size == 3)
 	{
-		temp = CAngle<U, size * (size - 1) / 2, radians>(ASin(U(normalized_vec.data[2])),
-			ATan2(U(normalized_vec.data[1]), U(normalized_vec.data[0])));
+		temp = CAngle<U, size * (size - 1) / 2, radians>(UU::ASin(U(normalized_vec.data[2])),
+			UU::ATan2(U(normalized_vec.data[1]), U(normalized_vec.data[0])));
 	}
 	else
 	{
@@ -630,7 +630,7 @@ UU::CVector<T, size> UU::CVector<T, size>::Min(const CVector & v) const
 	CVector temp;
 
 	for (int i = 0; i < size; ++i)
-		temp[i] = Min(data[i], v.data[i]);
+		temp[i] = UU::Min(data[i], v.data[i]);
 
 	return temp;
 }
@@ -641,7 +641,7 @@ UU::CVector<T, size> UU::CVector<T, size>::Max(const CVector & v) const
 	CVector temp;
 
 	for (int i = 0; i < size; ++i)
-		temp[i] = Max(data[i], v.data[i]);
+		temp[i] = UU::Max(data[i], v.data[i]);
 
 	return temp;
 }
@@ -652,7 +652,7 @@ UU::CVector<T, size> UU::CVector<T, size>::Clamp(const CVector & min, const CVec
 	CVector temp;
 
 	for (int i = 0; i < size; ++i)
-		temp[i] = Clamp(data[i], min.data[i], max.data[i]);
+		temp[i] = UU::Clamp(data[i], min.data[i], max.data[i]);
 
 	return temp;
 }
