@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef UU_INIT
+	#error "Please only include UU.hpp for now"
+#endif
+
 namespace UU
 {
 	constexpr float		FLT_PI = 3.141592653f;

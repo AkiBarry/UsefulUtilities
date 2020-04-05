@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef UU_INIT
+	#error "Please only include UU.hpp for now"
+#endif
+
 #include <vector>
 #include <corecrt_math.h>
 #include <type_traits>

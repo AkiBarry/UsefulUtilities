@@ -1,4 +1,9 @@
 #pragma once
+
+#ifndef UU_INIT
+	#error "Please only include UU.hpp for now"
+#endif
+
 #include <cstdint>
 
 namespace UU {

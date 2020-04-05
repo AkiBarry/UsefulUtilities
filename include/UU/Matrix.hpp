@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef UU_INIT
+	#error "Please only include UU.hpp for now"
+#endif
+
 #include <array>
 inline int nextval = 0;
 
