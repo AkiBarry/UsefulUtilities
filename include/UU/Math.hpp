@@ -5,8 +5,6 @@
 #include <type_traits>
 
 #include "Constants.hpp"
-#include "Vector.hpp"
-#include "Matrix.hpp"
 
 namespace UU
 {
@@ -197,19 +195,19 @@ T UU::Mod(const T a, const T b)
 template<typename T>
 T UU::Sin(T val)
 {
-	return sin(val);
+	return static_cast<T>(sin(val));
 }
 
 template<typename T>
 T UU::Cos(T val)
 {
-	return cos(val);
+	return static_cast<T>(cos(val));
 }
 
 template<typename T>
 T UU::Tan(T val)
 {
-	return tan(val);
+	return static_cast<T>(tan(val));
 }
 
 template<typename T>
@@ -392,3 +390,6 @@ T UU::RadToDeg(T angle)
 {
 	return angle * T(180.f / FLT_PI);
 }
+
+#include "Vector.hpp"
+#include "Matrix.hpp"

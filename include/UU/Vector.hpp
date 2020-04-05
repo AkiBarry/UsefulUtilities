@@ -1,5 +1,6 @@
 #pragma once
 #include "Constants.hpp"
+#include "Math.hpp"
 
 #include <initializer_list>
 #include <iostream>
