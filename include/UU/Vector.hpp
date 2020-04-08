@@ -30,6 +30,9 @@ namespace UU
 
 		CVector(std::initializer_list<T> init_list);
 
+		template<typename Y>
+		CVector(CVector<Y, size> vec);
+
 		constexpr void Zero();
 
 		T & operator[](size_t i);
@@ -129,6 +132,10 @@ namespace UU
 	using CVec2i = CVector<int, 2>;
 	using CVec3i = CVector<int, 3>;
 	using CVec4i = CVector<int, 4>;
+
+	using CVec2ui = CVector<unsigned int, 2>;
+	using CVec3ui = CVector<unsigned int, 3>;
+	using CVec4ui = CVector<unsigned int, 4>;
 
 	template<typename T, size_t size, bool radians /* = true */>
 	class CAngle
@@ -235,6 +242,16 @@ UU::CVector<T, size>::CVector(std::initializer_list<T> init_list)
 	for (size_t i = 0; it != init_list.end(); ++i, ++it)
 	{
 		data[i] = *it;
+	}
+}
+
+template<typename T, size_t size>
+template<typename Y>
+UU::CVector<T, size>::CVector(UU::CVector<Y, size> vec)
+{
+	for (size_t i = 0; i < size; ++i)
+	{
+		data[i] = static_cast<T>(vec[i]);
 	}
 }
 
