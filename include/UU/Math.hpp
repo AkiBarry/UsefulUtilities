@@ -260,19 +260,19 @@ T UU::InvSqrt(T val)
 template<typename T>
 T UU::Exp(T val)
 {
-	return exp(val);
+	return static_cast<T>(exp(val));
 }
 
 template<typename T>
 T UU::Ln(T val)
 {
-	return log(val);
+	return static_cast<T>(log(val));
 }
 
 template<typename T>
 T UU::Pow(T a, T b)
 {
-	return pow(a, b);
+	return static_cast<T>(pow(a, b));
 }
 
 template<typename T>
@@ -281,7 +281,7 @@ T UU::Floor(T val)
 	if constexpr (std::is_integral<T>::value)
 		return val;
 	
-	return floor(val);
+	return static_cast<T>(floor(val));
 }
 
 template<typename T>
@@ -290,7 +290,7 @@ T UU::Ceil(T val)
 	if constexpr (std::is_integral<T>::value)
 		return val;
 
-	return ceil(val);
+	return static_cast<T>(ceil(val));
 }
 
 template<typename T>
@@ -299,7 +299,7 @@ T UU::Trunc(T val)
 	if constexpr (std::is_integral<T>::value)
 		return val;
 	
-	return trunc(val);
+	return static_cast<T>(trunc(val));
 }
 
 template<typename T>
@@ -308,7 +308,7 @@ T UU::Round(T val)
 	if constexpr (std::is_integral<T>::value)
 		return val;
 
-	return round(val);
+	return static_cast<T>(round(val));
 }
 
 template <typename T>
