@@ -137,6 +137,10 @@ namespace UU
 	using CVec3ui = CVector<unsigned int, 3>;
 	using CVec4ui = CVector<unsigned int, 4>;
 
+	using CVec2l = CVector<long, 2>;
+	using CVec3l = CVector<long, 3>;
+	using CVec4l = CVector<long, 4>;
+
 	template<typename T, size_t size, bool radians /* = true */>
 	class CAngle
 	{
