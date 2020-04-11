@@ -21,20 +21,20 @@ namespace UU
 	template <typename T>
 	T Min(T val);
 
-	template <typename T>
-	T Min(T a, T b);
+	template <typename T, typename U>
+	auto Min(T a, U b) -> decltype(a + b);
 	
-	template <typename T, typename... Ts>
-	T Min(T val1, T val2, Ts... vals);
+	template <typename T, typename U, typename... Ts>
+	auto Min(T val1, T val2, Ts... vals) -> decltype((vals + ... + (val1 + val2)));
 
 	template <typename T>
 	T Max(T val);
 
-	template <typename T>
-	T Max(T a, T b);
+	template <typename T, typename U>
+	auto Max(T a, U b) -> decltype(a + b);
 
-	template <typename T, typename... Ts>
-	T Max(T val1, T val2, Ts... vals);
+	template <typename T, typename U, typename... Ts>
+	auto Max(T val1, U val2, Ts... vals) -> decltype((vals + ... + (val1 + val2)));
 
 	template <typename T>
 	T Clamp(T x, T min, T max);
@@ -130,7 +130,7 @@ T UU::Sign(const T val)
 template <typename T>
 T UU::Abs(const T val)
 {
-	return val < 0 ? -val : val;
+	return val < T(0) ? -val : val;
 }
 
 template<typename T>
@@ -139,40 +139,40 @@ T UU::Min(T val)
 	return val;
 }
 
-template <typename T>
-T UU::Min(const T a, const T b)
+template <typename T, typename U>
+auto UU::Min(T a, U b) -> decltype(a + b)
 {
-	return a < b ? a : b;
+	return static_cast<decltype(a + b)>(a < b ? a : b);
 }
 
-template<typename T, typename ... Ts>
-T UU::Min(T val1, T val2, Ts... vals)
+template<typename T, typename U, typename ... Ts>
+auto UU::Min(T val1, T val2, Ts... vals) -> decltype((vals + ... + (val1 + val2)))
 {
 	if (val1 < val2)
-		return Min(val1, vals...);
+		return Min(static_cast<decltype(val1 + val2)>(val1), vals...);
 
-	return Min(val2, vals...);
+	return Min(static_cast<decltype(val1 + val2)>(val2), vals...);
 }
 
 template<typename T>
-T UU::Max(T val)
+T UU::Max(const T val)
 {
 	return val;
 }
 
-template <typename T>
-T UU::Max(const T a, const T b)
+template <typename T, typename U>
+auto UU::Max(T a, U b) -> decltype(a + b)
 {
-	return a > b ? a : b;
+	return static_cast<decltype(a + b)>(a > b ? a : b);
 }
 
-template<typename T, typename ... Ts>
-T UU::Max(T val1, T val2, Ts... vals)
+template<typename T, typename U, typename ... Ts>
+auto UU::Max(T val1, U val2, Ts... vals) -> decltype((vals + ... + (val1 + val2)))
 {
 	if (val1 > val2)
-		return Max(val1, vals...);
+		return Max(static_cast<decltype(val1 + val2)>(val1), vals...);
 
-	return Max(val2, vals...);
+	return Max(static_cast<decltype(val1 + val2)>(val2), vals...);
 }
 
 template <typename T>
