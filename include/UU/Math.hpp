@@ -22,19 +22,19 @@ namespace UU
 	T Min(T val);
 
 	template <typename T, typename U>
-	auto Min(T a, U b) -> decltype(a + b);
+	auto Min(T a, U b) -> std::common_type_t<T, U>;
 	
 	template <typename T, typename U, typename... Ts>
-	auto Min(T val1, T val2, Ts... vals) -> decltype((vals + ... + (val1 + val2)));
+	auto Min(T val1, T val2, Ts... vals) -> std::common_type_t<T, U, Ts...>;
 
 	template <typename T>
 	T Max(T val);
 
 	template <typename T, typename U>
-	auto Max(T a, U b) -> decltype(a + b);
+	auto Max(T a, U b) ->std::common_type_t<T, U>;
 
 	template <typename T, typename U, typename... Ts>
-	auto Max(T val1, U val2, Ts... vals) -> decltype((vals + ... + (val1 + val2)));
+	auto Max(T val1, U val2, Ts... vals) -> std::common_type_t<T, U, Ts...>;
 
 	template <typename T>
 	T Clamp(T x, T min, T max);
@@ -140,18 +140,18 @@ T UU::Min(T val)
 }
 
 template <typename T, typename U>
-auto UU::Min(T a, U b) -> decltype(a + b)
+auto UU::Min(T a, U b) -> std::common_type_t<T, U>
 {
-	return static_cast<decltype(a + b)>(a < b ? a : b);
+	return static_cast<std::common_type_t<T, U>>(a < b ? a : b);
 }
 
 template<typename T, typename U, typename ... Ts>
-auto UU::Min(T val1, T val2, Ts... vals) -> decltype((vals + ... + (val1 + val2)))
+auto UU::Min(T val1, T val2, Ts... vals) -> std::common_type_t<T, U, Ts...>
 {
 	if (val1 < val2)
-		return Min(static_cast<decltype(val1 + val2)>(val1), vals...);
+		return Min(static_cast<std::common_type_t<T, U, Ts...>>(val1), vals...);
 
-	return Min(static_cast<decltype(val1 + val2)>(val2), vals...);
+	return Min(static_cast<std::common_type_t<T, U, Ts...>>(val1) >(val2), vals...);
 }
 
 template<typename T>
@@ -161,18 +161,18 @@ T UU::Max(const T val)
 }
 
 template <typename T, typename U>
-auto UU::Max(T a, U b) -> decltype(a + b)
+auto UU::Max(T a, U b) -> std::common_type_t<T, U>
 {
-	return static_cast<decltype(a + b)>(a > b ? a : b);
+	return static_cast<std::common_type_t<T, U>>(a > b ? a : b);
 }
 
 template<typename T, typename U, typename ... Ts>
-auto UU::Max(T val1, U val2, Ts... vals) -> decltype((vals + ... + (val1 + val2)))
+auto UU::Max(T val1, U val2, Ts... vals) -> std::common_type_t<T, U, Ts...>
 {
 	if (val1 > val2)
-		return Max(static_cast<decltype(val1 + val2)>(val1), vals...);
+		return Max(static_cast<std::common_type_t<T, U, Ts...>>(val1), vals...);
 
-	return Max(static_cast<decltype(val1 + val2)>(val2), vals...);
+	return Max(static_cast<std::common_type_t<T, U, Ts...>>(val2), vals...);
 }
 
 template <typename T>
