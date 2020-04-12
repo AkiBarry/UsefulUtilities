@@ -149,9 +149,9 @@ template<typename T, typename U, typename ... Ts>
 auto UU::Min(T val1, T val2, Ts... vals) -> std::common_type_t<T, U, Ts...>
 {
 	if (val1 < val2)
-		return Min(static_cast<std::common_type_t<T, U, Ts...>>(val1), vals...);
+		return Min(static_cast<std::common_type_t<T, U>>(val1), vals...);
 
-	return Min(static_cast<std::common_type_t<T, U, Ts...>>(val1) >(val2), vals...);
+	return Min(static_cast<std::common_type_t<T, U>>(val1) >(val2), vals...);
 }
 
 template<typename T>
@@ -170,9 +170,9 @@ template<typename T, typename U, typename ... Ts>
 auto UU::Max(T val1, U val2, Ts... vals) -> std::common_type_t<T, U, Ts...>
 {
 	if (val1 > val2)
-		return Max(static_cast<std::common_type_t<T, U, Ts...>>(val1), vals...);
+		return Max(static_cast<std::common_type_t<T, U>>(val1), vals...);
 
-	return Max(static_cast<std::common_type_t<T, U, Ts...>>(val2), vals...);
+	return Max(static_cast<std::common_type_t<T, U>>(val2), vals...);
 }
 
 template <typename T>
