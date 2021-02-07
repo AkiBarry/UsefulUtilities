@@ -50,11 +50,19 @@ namespace UU
 		CVector & operator*=(T t);
 		CVector & operator/=(T t);
 
-		CVector operator+(const CVector & v) const;
-		CVector operator-(const CVector & v) const;
+		template<typename U>
+		CVector<std::common_type_t<T, U>, size> operator+(const CVector<U, size> & v) const;
+
+		template<typename U>
+		CVector<std::common_type_t<T, U>, size> operator-(const CVector<U, size>& v) const;
+
 		CVector operator-() const;
-		CVector operator*(T t) const;
-		CVector operator/(T t) const;
+
+		template<typename U>
+		CVector<std::common_type_t<T, U>, size> operator*(U u) const;
+
+		template<typename U>
+		CVector<std::common_type_t<T, U>, size> operator/(U u) const;
 
 		bool operator==(const CVector & v) const;
 		bool operator!=(const CVector & v) const;
@@ -116,6 +124,9 @@ namespace UU
 
 			return os;
 		}
+
+		template<typename U, size_t size1>
+		friend class CVector;
 
 		template<typename U, size_t size1, bool radians = true>
 		friend class CAngle;
@@ -358,9 +369,10 @@ UU::CVector<T, size>& UU::CVector<T, size>::operator/=(T t)
 }
 
 template<typename T, size_t size>
-UU::CVector<T, size> UU::CVector<T, size>::operator+(const CVector & v) const
+template<typename U>
+UU::CVector<std::common_type_t<T, U>, size> UU::CVector<T, size>::operator+(const CVector<U, size> & v) const
 {
-	CVector<T, size> temp;
+	CVector<std::common_type_t<T, U>, size> temp;
 
 	for (size_t i = 0; i < size; ++i)
 		temp.data[i] = data[i] + v.data[i];
@@ -369,9 +381,10 @@ UU::CVector<T, size> UU::CVector<T, size>::operator+(const CVector & v) const
 }
 
 template<typename T, size_t size>
-UU::CVector<T, size> UU::CVector<T, size>::operator-(const CVector & v) const
+template<typename U>
+UU::CVector<std::common_type_t<T, U>, size>  UU::CVector<T, size>::operator-(const CVector<U, size> & v) const
 {
-	CVector<T, size> temp;
+	CVector<std::common_type_t<T, U>, size> temp;
 
 	for (int i = 0; i < size; ++i)
 		temp.data[i] = data[i] - v.data[i];
@@ -391,32 +404,34 @@ UU::CVector<T, size> UU::CVector<T, size>::operator-() const
 }
 
 template<typename T, size_t size>
-UU::CVector<T, size> UU::CVector<T, size>::operator*(T t) const
+template<typename U>
+UU::CVector<std::common_type_t<T, U>, size> UU::CVector<T, size>::operator*(U u) const
 {
-	CVector<T, size> temp;
+	CVector<std::common_type_t<T, U>, size> temp;
 
 	for (size_t i = 0; i < size; ++i)
-		temp.data[i] = data[i] * t;
+		temp.data[i] = data[i] * u;
 
 	return temp;
 }
 
 template<typename T, size_t size>
-UU::CVector<T, size> UU::CVector<T, size>::operator/(T t) const
+template<typename U>
+UU::CVector<std::common_type_t<T, U>, size> UU::CVector<T, size>::operator/(U u) const
 {
-	CVector<T, size> temp;
+	CVector<std::common_type_t<T, U>, size> temp;
 
-	if constexpr (std::is_floating_point<T>::value)
+	if constexpr (std::is_floating_point<std::common_type_t<T, U>>::value)
 	{
-		const T inv_t = static_cast<T>(1) / t;
+		const std::common_type_t<T, U> inv_u = static_cast<std::common_type_t<T, U>>(1) / u;
 
 		for (int i = 0; i < size; ++i)
-			temp.data[i] = data[i] * inv_t;
+			temp.data[i] = data[i] * inv_u;
 	}
 	else
 	{
 		for (int i = 0; i < size; ++i)
-			temp.data[i] = data[i] / t;
+			temp.data[i] = data[i] / u;
 	}
 
 	return temp;

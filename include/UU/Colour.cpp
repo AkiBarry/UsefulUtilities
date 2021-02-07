@@ -1,4 +1,8 @@
+#include "Colour.hpp"
 #include "UU.hpp"
+
+#include <cstdint>
+
 
 // CColour - Static Values
 
